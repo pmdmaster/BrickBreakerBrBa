@@ -1,6 +1,5 @@
 package brickbreakerbrba;
 
-
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -9,11 +8,10 @@ import javax.swing.ImageIcon;
 
 public class Base {
 
-    private double posX;    //posicion en x.       
-    private double posY;    //posicion en y.
+    private int posX;    //posicion en x.       
+    private int posY;	//posicion en y.
     private static int W;
     private static int H;
-    
     private Animacion animacion;  //animacion del objeto
 
     /**
@@ -24,13 +22,13 @@ public class Base {
      * @param image es la <code>imagen</code> del objeto.
      */
     public Base(int posX, int posY, Animacion animacion) {
-        this.posX = (double)posX;
-        this.posY = (double)posY;
+        this.posX = posX;
+        this.posY = posY;
         this.animacion = animacion;
     }
 
     /**
-     * Metodo modificador usado para cambiar la posicion entera en x del objeto
+     * Metodo modificador usado para cambiar la posicion en x del objeto
      *
      * @param posX es la <code>posicion en x</code> del objeto.
      */
@@ -39,51 +37,22 @@ public class Base {
     }
 
     /**
-     * Metodo modificador usado para cambiar la posicion en x del objeto
-     *
-     * @param posX es la <code>posicion en x</code> del objeto.
-     */
-    public void setDoublePosX(double posX) {
-        this.posX = posX;
-    }
-    
-    /**
-     * Metodo de acceso que regresa la posicion en x del objeto como entero
-     *
-     * @return posX es la <code>posicion en x</code> del objeto.
-     */
-    public int getPosX() {
-        return (int)posX;
-    }
-    
-    /**
      * Metodo de acceso que regresa la posicion en x del objeto
      *
      * @return posX es la <code>posicion en x</code> del objeto.
      */
-    public double getDoublePosX() {
+    public int getPosX() {
         return posX;
     }
 
     /**
-     * Metodo modificador usado para cambiar la posicion entera en y del objeto
+     * Metodo modificador usado para cambiar la posicion en y del objeto
      *
      * @param posY es la <code>posicion en y</code> del objeto.
      */
     public void setPosY(int posY) {
         this.posY = posY;
     }
-    
-    /**
-     * Metodo modificador usado para cambiar la posicion en y del objeto
-     *
-     * @param posY es la <code>posicion en y</code> del objeto.
-     */
-    public void setDoublePosY(double posY) {
-        this.posY = posY;
-    }
-    
-    
 
     /**
      * Metodo de acceso que regresa la posicion en y del objeto
@@ -91,15 +60,6 @@ public class Base {
      * @return posY es la <code>posicion en y</code> del objeto.
      */
     public int getPosY() {
-        return (int)posY;
-    }
-    
-    /**
-     * Metodo de acceso que regresa la posicion en y del objeto como entero
-     *
-     * @return posY es la <code>posicion en y</code> del objeto.
-     */
-    public double getDoublePosY() {
         return posY;
     }
 
@@ -153,21 +113,6 @@ public class Base {
     }
 
     /**
-     * Metodo de acceso que regresa un nuevo rectangulo en el centro del objeto
-     *
-     * @return un objeto de la clase <code>Rectangle</code>.
-     */
-    public Rectangle getCentro() {
-        return new Rectangle(getPosX() + getAncho()/4, getPosY() + 3*getAlto()/8, 
-                getAncho()/2, getAlto()/4);
-    }
-    
-    public Rectangle getCentroSup() {
-        return new Rectangle(getPosX() + getAncho()/4, getPosY(), 
-                getAncho()/2, getAlto()/4);
-    }
-    
-    /**
      * Checa si el objeto <code>Base</code> intersecta a otro
      * <code>Base</code>
      *
@@ -178,28 +123,14 @@ public class Base {
         return getPerimetro().intersects(obj.getPerimetro());
     }
 
-    public boolean intersectaCentroSup(Base obj) {
-        return getCentro().intersects(obj.getCentroSup());
-    }
-    
-    /**
-     * Checa si el objeto <code>Base</code> contiene un punto.
-     * @param x coordenada x del punto.
-     * @param y coordenada y del punto.
-     * @return <code>true</code> si lo contiene, <code>false</code> si no.
-     */
     public boolean intersecta(int x, int y) {
         return getPerimetro().contains(new Point(x, y));
     }
 
-    /**
-     * Actualiza la <code>Animacion</code>
-     * @param tiempo es el tiempo actual.
-     */
     public void actualiza(long tiempo) {
         animacion.actualiza(tiempo);
     }
-
+    
     /**
      * Permite a los objetos conocer el ancho del <code>JFrame</code>.
      * @param w ancho del <code>JFrame</code>.
