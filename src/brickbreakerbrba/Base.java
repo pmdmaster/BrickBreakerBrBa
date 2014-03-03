@@ -123,10 +123,20 @@ public class Base {
         return getPerimetro().intersects(obj.getPerimetro());
     }
 
-    public boolean intersecta(int x, int y) {
+    /**
+     * Checa si el objeto contiene al punto (x, y)
+     * @param x coordenada X del punto
+     * @param y coordenada Y del punto
+     * @return <code>true</code> o <code>false</code>.
+     */
+    public boolean contiene(int x, int y) {
         return getPerimetro().contains(new Point(x, y));
     }
 
+    /**
+     * Actualiza la animacion
+     * @param tiempo tiempo actual del JFrame
+     */
     public void actualiza(long tiempo) {
         animacion.actualiza(tiempo);
     }
@@ -161,5 +171,31 @@ public class Base {
      */
     public static int getH() {
         return H;
+    }
+    
+    public Rectangle getUp() {
+        return new Rectangle(getPosX(), getPosY(), getAncho(), getAlto()/5);
+    }
+    public Rectangle getDown() {
+        return new Rectangle(getPosX(), getPosY() + 4*getAlto()/5, getAncho(), getAlto()/5);
+    }
+    public Rectangle getLeft() {
+        return new Rectangle(getPosX(), getPosY(), getAncho()/5, getAlto());
+    }
+    public Rectangle getRight() {
+        return new Rectangle(getPosX() + 4*getAncho()/5, getPosY(), getAncho()/5, getAlto());
+    }
+    
+    public boolean hitUp(Base otro) {
+        return getUp().intersects(otro.getDown());
+    }
+    public boolean hitDown(Base otro) {
+        return getDown().intersects(otro.getUp());
+    }
+    public boolean hitLeft(Base otro) {
+        return getLeft().intersects(otro.getRight());
+    }
+    public boolean hitRight(Base otro) {
+        return getRight().intersects(otro.getLeft());
     }
 }
