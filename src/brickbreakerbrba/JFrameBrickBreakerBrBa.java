@@ -27,16 +27,14 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
     private static final String nombreArchivo = "score.txt";
     private String[] arr;    //Arreglo del archivo divido.
     private Pelota pelota;
-    private Canasta canasta;
+    private Barra canasta;
+    private Vector<Ladrillo> ladrillos;
     private boolean pausa;
     private boolean instrucciones;
     private boolean entrando;
     private boolean sound;
     private int vidas;
     private int score;
-    private int caidas;
-    private long tiempo;
-    private long tMensaje;
     private Image dbImage;
     private Image background;
     private Image gameover;
@@ -53,7 +51,7 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
      * Método constructor de la clase <code>JFrameExamen</code>.
      */
     public JFrameBrickBreakerBrBa() {
-        setTitle("Examen");
+        setTitle("Breaking Bad");
         setSize(1100, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         init();
@@ -71,11 +69,9 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
         Base.setW(getWidth());
         Base.setH(getHeight());
         pelota = new Pelota(0, 0);
-        pelota.setX(getWidth() / 5 - pelota.getAncho());
-        pelota.setY(getHeight() / 2 - pelota.getAlto());
-        canasta = new Canasta(0, 0);
-        canasta.setPosX((int) (Math.random() * (getWidth() / 2 - canasta.getAncho())) + getWidth() / 2);
-        canasta.setPosY(getHeight() - 3 * canasta.getAlto() / 2);
+        pelota.setPosX(getWidth() / 5 - pelota.getAncho());
+        pelota.setPosY(getHeight() / 2 - pelota.getAlto());
+
         background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/background.jpg"));
         pause = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pause.png"));
         instructionBack = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/instrucciones.jpg"));
@@ -86,10 +82,8 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
         entrando = false;
         sound = true;
         tMensaje = 500;
-        tiempo = System.currentTimeMillis() - tMensaje - 1;
         vidas = 5;
         score = 0;
-        caidas = 0;
         //Pinta el fondo del Applet de color blanco
         setBackground(Color.white);
         shoot = new SoundClip("Sounds/failS.wav");
