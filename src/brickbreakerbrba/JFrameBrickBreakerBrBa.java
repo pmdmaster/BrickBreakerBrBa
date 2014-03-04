@@ -45,13 +45,13 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
     private SoundClip bang;
     private SoundClip shoot;
     private Menu menu;
-    private enum STATE{
+    public static enum STATE{
         MENU,
         CHARSEL,
         GAME,
         GAMEOVER,
     };
-    private STATE State;
+    public static STATE State;
 
     //Variables de control de tiempo de la animacion
     private long tiempoActual;
