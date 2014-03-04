@@ -47,7 +47,9 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
     private Menu menu;
     private enum STATE{
         MENU,
+        CHARSEL,
         GAME,
+        GAMEOVER,
     };
     private STATE State;
 
@@ -79,7 +81,7 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
         pelota.setPosX(getWidth() / 5 - pelota.getAncho());
         pelota.setPosY(getHeight() / 2 - pelota.getAlto());
         State = STATE.MENU;
-        
+        menu = new Menu();
         background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/background.jpg"));
         pause = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pause.png"));
         instructionBack = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/instrucciones.jpg"));
@@ -198,29 +200,30 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
      * El método actualiza() actualiza la animación
      */
     public void actualiza() {
+        if(State == State.GAME) {
+            //Determina el tiempo que ha transcurrido desde que el Applet inicio su ejecución
+            long tiempoTranscurrido = System.currentTimeMillis() - tiempoActual;
 
-        //Determina el tiempo que ha transcurrido desde que el Applet inicio su ejecución
-        long tiempoTranscurrido = System.currentTimeMillis() - tiempoActual;
+            //Guarda el tiempo actual
+            tiempoActual += tiempoTranscurrido;
 
-        //Guarda el tiempo actual
-        tiempoActual += tiempoTranscurrido;
+            if (canasta.getMoveLeft()) {
+                canasta.setPosX(canasta.getPosX() - 4);
+            }
+            if (canasta.getMoveRight()) {
+                canasta.setPosX(canasta.getPosX() + 4);
+            }
 
-        if (canasta.getMoveLeft()) {
-            canasta.setPosX(canasta.getPosX() - 4);
-        }
-        if (canasta.getMoveRight()) {
-            canasta.setPosX(canasta.getPosX() + 4);
-        }
+            pelota.avanza();
+            if (entrando) {
+                pelota.setPosX(canasta.getPosX() + canasta.getAncho() / 2 - pelota.getAncho() / 2);
+            }
 
-        pelota.avanza();
-        if (entrando) {
-            pelota.setPosX(canasta.getPosX() + canasta.getAncho() / 2 - pelota.getAncho() / 2);
-        }
-
-        //Actualiza la animación en base al tiempo transcurrido
-        canasta.actualiza(tiempoTranscurrido);
-        if (pelota.getMov()) {
-            pelota.actualiza(tiempoTranscurrido);
+            //Actualiza la animación en base al tiempo transcurrido
+            canasta.actualiza(tiempoTranscurrido);
+            if (pelota.getMov()) {
+                pelota.actualiza(tiempoTranscurrido);
+            }
         }
     }
 
@@ -229,37 +232,38 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
      * del <code>Applet</code> y entre si.
      */
     public void checaColision() {
-        if (canasta.getPosX() < getWidth() / 2) {
-            canasta.setPosX(getWidth() / 2);
-        }
-        if (canasta.getPosX() + canasta.getAncho() > getWidth()) {
-            canasta.setPosX(getWidth() - canasta.getAncho());
-        }
-
-        if (pelota.getPosY() > getHeight() + 10) {
-            if (!entrando && sound) {
-                shoot.play();
+        if(State == State.GAME) {
+            if (canasta.getPosX() < getWidth() / 2) {
+                canasta.setPosX(getWidth() / 2);
             }
-            pelota.reaparecer();
-            if (entrando) {
-                entrando = false;
-            } else {
-                caidas++;
-                if (caidas % 3 == 0) {
-                    vidas--;
-                    Pelota.setAceleracion(Pelota.getAceleracion() + 400);
+            if (canasta.getPosX() + canasta.getAncho() > getWidth()) {
+                canasta.setPosX(getWidth() - canasta.getAncho());
+            }
+
+            if (pelota.getPosY() > getHeight() + 10) {
+                if (!entrando && sound) {
+                    shoot.play();
+                }
+                pelota.reaparecer();
+                if (entrando) {
+                    entrando = false;
+                } else {
+                    caidas++;
+                    if (caidas % 3 == 0) {
+                        vidas--;
+                        Pelota.setAceleracion(Pelota.getAceleracion() + 400);
+                    }
                 }
             }
-        }
 
-        if (pelota.intersectaCentroSup(canasta) && !entrando) {
-            score += 2;
-            if (sound) {
-                bang.play();
+            if (pelota.intersectaCentroSup(canasta) && !entrando) {
+                score += 2;
+                if (sound) {
+                    bang.play();
+                }
+                entrando = true;
             }
-            entrando = true;
         }
-
     }
 
     /**
@@ -331,8 +335,8 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
                 pausa = true;
                 g.drawImage(gameover, 0, 0, this);    // Imagen de instrucciones
             }
-        } else {
-            
+        } else if(State == State.MENU) {
+            menu.render(g);
         }
     }
 
@@ -347,29 +351,30 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
      */
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            canasta.setMoveLeft(true);
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            canasta.setMoveRight(true);
-        } else if (e.getKeyCode() == KeyEvent.VK_P) {
-            if (!pausa) {
-                pausa = true;
-                pelota.freeze();
-            } else {
-                pausa = false;
-                pelota.unfreeze();
-            }
-        } else if (e.getKeyCode() == KeyEvent.VK_C) {
+       if(State == STATE.GAME) {
+            if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                canasta.setMoveLeft(true);
+            } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                canasta.setMoveRight(true);
+            } else if (e.getKeyCode() == KeyEvent.VK_P) {
+                if (!pausa) {
+                    pausa = true;
+                    pelota.freeze();
+                } else {
+                    pausa = false;
+                    pelota.unfreeze();
+                }
+            } else if (e.getKeyCode() == KeyEvent.VK_C) {
 
-            try {
-                leeArchivo();
-            } catch (IOException ex) {
-                Logger.getLogger(JFrameBrickBreakerBrBa.class.getName()).log(Level.SEVERE, null, ex);
+                try {
+                    leeArchivo();
+                } catch (IOException ex) {
+                    Logger.getLogger(JFrameBrickBreakerBrBa.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else if (e.getKeyCode() == KeyEvent.VK_S) {
+                sound = !sound;
             }
-        } else if (e.getKeyCode() == KeyEvent.VK_S) {
-            sound = !sound;
-        }
-
+       }
     }
 
     /**
@@ -379,28 +384,30 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
      */
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            canasta.setMoveLeft(false);
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            canasta.setMoveRight(false);
-        } else if (e.getKeyCode() == KeyEvent.VK_G) {
-            if (!instrucciones) {
-                try {
-                    grabaArchivo();
-                } catch (IOException ex) {
-                    Logger.getLogger(JFrameBrickBreakerBrBa.class.getName()).log(Level.SEVERE, null, ex);
+        if(State == STATE.GAME) {
+            if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                canasta.setMoveLeft(false);
+            } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                canasta.setMoveRight(false);
+            } else if (e.getKeyCode() == KeyEvent.VK_G) {
+                if (!instrucciones) {
+                    try {
+                        grabaArchivo();
+                    } catch (IOException ex) {
+                        Logger.getLogger(JFrameBrickBreakerBrBa.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-            }
 
-        } else if (e.getKeyCode() == KeyEvent.VK_I) {
-            if (!instrucciones) {
-                instrucciones = true;
-                pelota.freeze();
-            } else {
-                instrucciones = false;
-                pelota.unfreeze();
-            }
+            } else if (e.getKeyCode() == KeyEvent.VK_I) {
+                if (!instrucciones) {
+                    instrucciones = true;
+                    pelota.freeze();
+                } else {
+                    instrucciones = false;
+                    pelota.unfreeze();
+                }
 
+            }
         }
     }
 
