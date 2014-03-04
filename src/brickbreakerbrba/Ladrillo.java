@@ -36,10 +36,9 @@ public class Ladrillo extends Base {
     
     /**
      * Cambia el parametro de visibilidad a falso
-     * @return el valor que tenía 
+     * @return el valor que tenía de cadaa item
      */
     public int desaparece() {
-       
         visible = false;
         return item;
     }

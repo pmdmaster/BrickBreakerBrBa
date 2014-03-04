@@ -1,6 +1,7 @@
 package brickbreakerbrba;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -43,6 +44,12 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
     private Graphics dbg;
     private SoundClip bang;
     private SoundClip shoot;
+    private Menu menu;
+    private enum STATE{
+        MENU,
+        GAME,
+    };
+    private STATE State;
 
     //Variables de control de tiempo de la animacion
     private long tiempoActual;
@@ -71,7 +78,8 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
         pelota = new Pelota(0, 0);
         pelota.setPosX(getWidth() / 5 - pelota.getAncho());
         pelota.setPosY(getHeight() / 2 - pelota.getAlto());
-
+        State = STATE.MENU;
+        
         background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/background.jpg"));
         pause = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pause.png"));
         instructionBack = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/instrucciones.jpg"));
@@ -289,38 +297,42 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
      * @param g es el <code>objeto grafico</code> usado para dibujar.
      */
     public void paint1(Graphics g) {
-        //g.setColor(Color.RED);
-        //g.fillRect(0, 0, getWidth(), getHeight());
-        // Muestra en pantalla el cuadro actual de la animación
-        g.drawImage(background, 0, 0, this);    // Imagen de background
-        if (pelota != null && pelota.getImagenI() != null) {
+        if(State == STATE.GAME) {
+            //g.setColor(Color.RED);
+            //g.fillRect(0, 0, getWidth(), getHeight());
+            // Muestra en pantalla el cuadro actual de la animación
+            g.drawImage(background, 0, 0, this);    // Imagen de background
+            if (pelota != null && pelota.getImagenI() != null) {
 
-            g.drawImage(pelota.getImagenI(), pelota.getPosX(), pelota.getPosY(), this);
-        }
+                g.drawImage(pelota.getImagenI(), pelota.getPosX(), pelota.getPosY(), this);
+            }
 
-        if (canasta != null && canasta.getImagenI() != null) {
-            g.drawImage(canasta.getImagenI(), canasta.getPosX(), canasta.getPosY(), this);
-        }
+            if (canasta != null && canasta.getImagenI() != null) {
+                g.drawImage(canasta.getImagenI(), canasta.getPosX(), canasta.getPosY(), this);
+            }
 
-        g.setFont(new Font("default", Font.BOLD, 16));
-        if (pausa) { // mensaje de pausa
-            g.setColor(Color.white);
-            g.drawImage(pause, canasta.getPosX() - 10, canasta.getPosY() - 37, this);
-        }
+            g.setFont(new Font("default", Font.BOLD, 16));
+            if (pausa) { // mensaje de pausa
+                g.setColor(Color.white);
+                g.drawImage(pause, canasta.getPosX() - 10, canasta.getPosY() - 37, this);
+            }
 
-        g.setColor(Color.green);
-        g.drawString("Score: " + score, 20, 55);
-        g.setColor(Color.blue);
-        g.drawString("Caídas: " + caidas, 20, 80);
-        g.setColor(Color.red);
-        g.drawString("Vidas: " + vidas, 20, 105);
-        if (instrucciones) {
-            setBackground(Color.black);
-            g.drawImage(instructionBack, 0, 0, this);    // Imagen de instrucciones
-        }
-        if (vidas <= 0) {
-            pausa = true;
-            g.drawImage(gameover, 0, 0, this);    // Imagen de instrucciones
+            g.setColor(Color.green);
+            g.drawString("Score: " + score, 20, 55);
+            g.setColor(Color.blue);
+            g.drawString("Caídas: " + caidas, 20, 80);
+            g.setColor(Color.red);
+            g.drawString("Vidas: " + vidas, 20, 105);
+            if (instrucciones) {
+                setBackground(Color.black);
+                g.drawImage(instructionBack, 0, 0, this);    // Imagen de instrucciones
+            }
+            if (vidas <= 0) {
+                pausa = true;
+                g.drawImage(gameover, 0, 0, this);    // Imagen de instrucciones
+            }
+        } else {
+            
         }
     }
 
