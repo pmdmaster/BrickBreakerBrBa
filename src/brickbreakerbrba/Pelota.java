@@ -103,9 +103,9 @@ public class Pelota extends Base {
      */ 
     private static Animacion getAnimacion() {
         Animacion anim = new Animacion();
-        for (int i = 0; i <= 20; i++) {
-            anim.sumaCuadro (Toolkit.getDefaultToolkit ().getImage (Pelota.class.getResource ("###############" + i + ".png")), 60);
-        }
+
+        anim.sumaCuadro (Toolkit.getDefaultToolkit ().getImage (Pelota.class.getResource ("Images/pill.png")), 60);
+        
         return anim;
     }
     
