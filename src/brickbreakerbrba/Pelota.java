@@ -36,13 +36,41 @@ public class Pelota extends Base {
      * @return un valor boleano <code>true</code> si lo intersecta
      * <code>false</code> en caso contrario
      */
-    public boolean intersects(Base obj, int velX, int velY) {
-        vX = velX;
-        vY = velY;
+    public boolean intersects(Base obj) {
         return getPerimetro().intersects(obj.getPerimetro());
     }
     
-
+    /**
+     * Establece el valor de vx
+     * @param v un <code>double</code>
+     */
+    public void setVx(int v) {
+        vX = v;
+    }
+    
+    /**
+     * Establece el valor de vy
+     * @param v un <code>double</code>
+     */
+    public void setVy(int v) {
+        vY = v;
+    }
+    
+    /**
+     * Establece el valor de vx
+     * @param v un <code>double</code>
+     */
+    public int getVx() {
+        return vX;
+    }
+    
+    /**
+     * Establece el valor de vy
+     * @return 
+     */
+    public int getVy() {
+        return vY;
+    }
     
     /**
      * Indica si la pelota está en movimiento o no

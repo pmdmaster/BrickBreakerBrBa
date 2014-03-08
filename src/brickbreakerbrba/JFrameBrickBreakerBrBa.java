@@ -234,32 +234,29 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
      */
     public void checaColision() {
         if(State == State.GAME) {
-            if (barra.getPosX() < getWidth() / 2) {
-                barra.setPosX(getWidth() / 2);
+            if (barra.getPosX() < 0) {
+                barra.setPosX(0);
             }
             if (barra.getPosX() + barra.getAncho() > getWidth()) {
                 barra.setPosX(getWidth() - barra.getAncho());
             }
-
+            if((pelota.getPosX() < 0) || (pelota.getPosX() + pelota.getAncho () > getWidth())) {
+                pelota.setVx((-1)*pelota.getVx());
+            }
             if (pelota.getPosY() > getHeight() + 10) {
-                if (!entrando && sound) {
+                if ( sound) {
                     shoot.play();
                 }
                 pelota.reaparecer();
-                if (entrando) {
-                    entrando = false;
-                } else {
-                    vidas--;
-                    }
-                }
+                vidas--;
+      
             }
+            if (pelota.intersects(barra)) {
 
-            if (pelota.intersectaCentroSup(barra) && !entrando) {
-                score += 2;
                 if (sound) {
                     bang.play();
                 }
-                entrando = true;
+                pelota.setVy((-1)*pelota.getVy());
             }
         }
     }
@@ -321,8 +318,7 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
 
             g.setColor(Color.green);
             g.drawString("Score: " + score, 20, 55);
-            g.setColor(Color.blue);
-            g.drawString("Caídas: " + caidas, 20, 80);
+
             g.setColor(Color.red);
             g.drawString("Vidas: " + vidas, 20, 105);
             if (instrucciones) {
@@ -357,10 +353,10 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
             } else if (e.getKeyCode() == KeyEvent.VK_P) {
                 if (!pausa) {
                     pausa = true;
-                    pelota.freeze();
+
                 } else {
                     pausa = false;
-                    pelota.unfreeze();
+
                 }
             } else if (e.getKeyCode() == KeyEvent.VK_C) {
 
@@ -399,10 +395,11 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
             } else if (e.getKeyCode() == KeyEvent.VK_I) {
                 if (!instrucciones) {
                     instrucciones = true;
-                    pelota.freeze();
+                    pausa = true;
+
                 } else {
                     instrucciones = false;
-                    pelota.unfreeze();
+                    pausa = true;
                 }
 
             }
