@@ -28,7 +28,7 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
     private static final String nombreArchivo = "score.txt";
     private String[] arr;    //Arreglo del archivo divido.
     private Pelota pelota;
-    private Barra canasta;
+    private Barra barra;
     private Vector<Ladrillo> ladrillos;
     private boolean pausa;
     private boolean instrucciones;
@@ -36,6 +36,7 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
     private boolean sound;
     private int vidas;
     private int score;
+    private int tMensaje;
     private Image dbImage;
     private Image background;
     private Image gameover;
@@ -77,9 +78,8 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
         addMouseListener(this);
         Base.setW(getWidth());
         Base.setH(getHeight());
-        pelota = new Pelota(0, 0);
-        pelota.setPosX(getWidth() / 5 - pelota.getAncho());
-        pelota.setPosY(getHeight() / 2 - pelota.getAlto());
+        pelota = new Pelota(getWidth()/2, getHeight() - 50, 0,0);
+
         State = STATE.MENU;
         menu = new Menu();
         background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/background.jpg"));
@@ -94,6 +94,7 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
         tMensaje = 500;
         vidas = 5;
         score = 0;
+        
         //Pinta el fondo del Applet de color blanco
         setBackground(Color.white);
         shoot = new SoundClip("Sounds/failS.wav");
@@ -168,11 +169,11 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
         pausa = Boolean.parseBoolean(arr[0]);
         vidas = Integer.parseInt(arr[1]);
         score = Integer.parseInt(arr[2]);
-        caidas = Integer.parseInt(arr[3]);
-        entrando = Boolean.parseBoolean(arr[4]);
+        
+        
         pelota.assingData(arr);
-        canasta.assignData(arr);
-        sound = Boolean.parseBoolean(arr[14]);
+        
+        sound = Boolean.parseBoolean(arr[7]);
         fileIn.close();
 
     }
@@ -188,7 +189,7 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
             try {
                 PrintWriter fileOut = new PrintWriter(new FileWriter(nombreArchivo));
 
-                fileOut.println(String.valueOf(pausa) + "," + String.valueOf(vidas) + "," + String.valueOf(score) + "," + String.valueOf(caidas) + "," + String.valueOf(entrando) + "," + pelota.getData() + "," + canasta.getData() + "," + String.valueOf(sound));
+                fileOut.println(String.valueOf(pausa) + "," + String.valueOf(vidas) + "," + String.valueOf(score) + "," + pelota.getData() +  "," + String.valueOf(sound));
                 fileOut.close();
             } catch (FileNotFoundException e) {
 
@@ -207,20 +208,20 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
             //Guarda el tiempo actual
             tiempoActual += tiempoTranscurrido;
 
-            if (canasta.getMoveLeft()) {
-                canasta.setPosX(canasta.getPosX() - 4);
+            if (barra.getMoveLeft()) {
+                barra.setPosX(barra.getPosX() - 4);
             }
-            if (canasta.getMoveRight()) {
-                canasta.setPosX(canasta.getPosX() + 4);
+            if (barra.getMoveRight()) {
+                barra.setPosX(barra.getPosX() + 4);
             }
 
             pelota.avanza();
             if (entrando) {
-                pelota.setPosX(canasta.getPosX() + canasta.getAncho() / 2 - pelota.getAncho() / 2);
+                pelota.setPosX(barra.getPosX() + barra.getAncho() / 2 - pelota.getAncho() / 2);
             }
 
             //Actualiza la animación en base al tiempo transcurrido
-            canasta.actualiza(tiempoTranscurrido);
+            barra.actualiza(tiempoTranscurrido);
             if (pelota.getMov()) {
                 pelota.actualiza(tiempoTranscurrido);
             }
@@ -233,11 +234,11 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
      */
     public void checaColision() {
         if(State == State.GAME) {
-            if (canasta.getPosX() < getWidth() / 2) {
-                canasta.setPosX(getWidth() / 2);
+            if (barra.getPosX() < getWidth() / 2) {
+                barra.setPosX(getWidth() / 2);
             }
-            if (canasta.getPosX() + canasta.getAncho() > getWidth()) {
-                canasta.setPosX(getWidth() - canasta.getAncho());
+            if (barra.getPosX() + barra.getAncho() > getWidth()) {
+                barra.setPosX(getWidth() - barra.getAncho());
             }
 
             if (pelota.getPosY() > getHeight() + 10) {
@@ -248,15 +249,12 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
                 if (entrando) {
                     entrando = false;
                 } else {
-                    caidas++;
-                    if (caidas % 3 == 0) {
-                        vidas--;
-                        Pelota.setAceleracion(Pelota.getAceleracion() + 400);
+                    vidas--;
                     }
                 }
             }
 
-            if (pelota.intersectaCentroSup(canasta) && !entrando) {
+            if (pelota.intersectaCentroSup(barra) && !entrando) {
                 score += 2;
                 if (sound) {
                     bang.play();
@@ -311,14 +309,14 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
                 g.drawImage(pelota.getImagenI(), pelota.getPosX(), pelota.getPosY(), this);
             }
 
-            if (canasta != null && canasta.getImagenI() != null) {
-                g.drawImage(canasta.getImagenI(), canasta.getPosX(), canasta.getPosY(), this);
+            if (barra != null && barra.getImagenI() != null) {
+                g.drawImage(barra.getImagenI(), barra.getPosX(), barra.getPosY(), this);
             }
 
             g.setFont(new Font("default", Font.BOLD, 16));
             if (pausa) { // mensaje de pausa
                 g.setColor(Color.white);
-                g.drawImage(pause, canasta.getPosX() - 10, canasta.getPosY() - 37, this);
+                g.drawImage(pause, barra.getPosX() - 10, barra.getPosY() - 37, this);
             }
 
             g.setColor(Color.green);
@@ -345,7 +343,7 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
     }
 
     /**
-     * Define el sentido del movimiento de <code>canasta</code>
+     * Define el sentido del movimiento de <code>barra</code>
      *
      * @param e
      */
@@ -353,9 +351,9 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
     public void keyPressed(KeyEvent e) {
        if(State == STATE.GAME) {
             if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                canasta.setMoveLeft(true);
+                barra.setMoveLeft(true);
             } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                canasta.setMoveRight(true);
+                barra.setMoveRight(true);
             } else if (e.getKeyCode() == KeyEvent.VK_P) {
                 if (!pausa) {
                     pausa = true;
@@ -378,7 +376,7 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
     }
 
     /**
-     * Define el sentido del movimiento de <code>canasta</code>
+     * Define el sentido del movimiento de <code>barra</code>
      *
      * @param e
      */
@@ -386,9 +384,9 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
     public void keyReleased(KeyEvent e) {
         if(State == STATE.GAME) {
             if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                canasta.setMoveLeft(false);
+                barra.setMoveLeft(false);
             } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                canasta.setMoveRight(false);
+                barra.setMoveRight(false);
             } else if (e.getKeyCode() == KeyEvent.VK_G) {
                 if (!instrucciones) {
                     try {

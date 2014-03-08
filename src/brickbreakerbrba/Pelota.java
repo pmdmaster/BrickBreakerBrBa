@@ -15,13 +15,18 @@ import java.awt.Toolkit;
  */
 public class Pelota extends Base {
     
-    private double vX;
-    private double vY;
+    private int vX;
+    private int vY;
+    private int initX;
+    private int initY;
+    private boolean mov;
     
-    public Pelota (int posX, int posY, double velX, double velY) {
+    public Pelota (int posX, int posY, int velX, int velY) {
         super(posX, posY, getAnimacion());
         vX = velX;
-        vY = velY;
+        initX = posX;
+        vY = initY = velY;
+        initY = posY;
     }
     
     /**
@@ -31,24 +36,37 @@ public class Pelota extends Base {
      * @return un valor boleano <code>true</code> si lo intersecta
      * <code>false</code> en caso contrario
      */
-    public boolean intersects(Base obj, double velX, double velY) {
-        setDoubleVx(velX);
-        setDoubleVy(velY);
+    public boolean intersects(Base obj, int velX, int velY) {
+        vX = velX;
+        vY = velY;
         return getPerimetro().intersects(obj.getPerimetro());
     }
     
+
+    
     /**
-     * Actualiza el parametro de velocidad en X
-     */   
-    public void setDoubleVx(double velX) {
-        vX = velX;
+     * Indica si la pelota está en movimiento o no
+     * @param m valor que tomará <code>mov</code>
+     */
+    public void setMov(boolean m) {
+        mov = m;
     }
     
     /**
-     * Actualiza el parametro de velocidad en Y
+     * Regresa si <code>Pelota</code> esta en movimiento o no
+     * @return true o false
      */
-    public void setDoubleVy(double velY) {
-        vY = velY;
+    public boolean getMov() {
+        return mov;
+    }
+    /**
+     * Inicia el movimiento de <code>Pelota<code>.
+     */
+    public void lanzar() {
+        mov = true;
+        vX = (int) (Math.random ()*10-5);
+        vY = (int) -(Math.random ()*4+1);
+
     }
     
     /**
@@ -61,5 +79,37 @@ public class Pelota extends Base {
             anim.sumaCuadro (Toolkit.getDefaultToolkit ().getImage (Pelota.class.getResource ("###############" + i + ".png")), 60);
         }
         return anim;
+    }
+    
+    public String getData() {
+        String salida = String.valueOf(getPosX())+","+String.valueOf(getPosY())+","+ String.valueOf(vX) + ",";
+        salida += String.valueOf (vY);
+        return salida;
+        
+    }
+    public void assingData(String[] arr) {
+        
+        setPosX(Integer.parseInt(arr[3]));
+        setPosY(Integer.parseInt(arr[4]));
+        vX = Integer.parseInt(arr[5]);
+        vY = Integer.parseInt(arr[6]);
+
+    }
+    /**
+     * La pelota se mueve de acuerdo al tiempo, velocidad en X y Y, y gravedad.
+     */
+    public void avanza() {
+        if (mov) {
+            setPosX(getPosX() + vX);
+            setPosY(getPosY() + vY);
+        }
+    }
+    /**
+     * <code>Pelota</code> reaparece en su posicion original.
+     */
+    public void reaparecer() {
+        setPosX(initX);
+        setPosY(initY);
+        mov = false;
     }
 }
