@@ -482,7 +482,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {
+        menu.mouseClicked(e);
+        charSel.mouseClicked(e);
+        help.mouseClicked(e);
+        gameOver.mouseClicked(e);
+        win.mouseClicked(e);
+    }
 
     @Override
     public void mousePressed(MouseEvent e) {

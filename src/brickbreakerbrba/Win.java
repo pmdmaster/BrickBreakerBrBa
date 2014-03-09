@@ -49,7 +49,7 @@ public class Win implements MouseListener {
      */
     @Override
     public void mouseClicked (MouseEvent e) {
-        if(Juego.State == Juego.STATE.GAMEOVER) {
+        if(Juego.State == Juego.STATE.WIN) {
             if (RETURN.contiene (e.getX(), e.getY())) {
                 Juego.State = Juego.STATE.MENU;
             } else if (QUIT.contiene(e.getX(), e.getY())) {
