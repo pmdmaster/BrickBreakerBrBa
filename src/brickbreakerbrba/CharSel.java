@@ -28,8 +28,12 @@ public class CharSel implements MouseListener {
      */
     public CharSel(Image background) {
         this.BACKGROUND = background;
-        PLAY = new Boton(Base.getW()/4, 6*Base.getH()/7, "Images/Buttons/play.png");
-        RETURN = new Boton(3*Base.getW()/4, 6*Base.getH()/7, "Images/Buttons/return.png");
+        PLAY = new Boton(Base.getW()/3, 4*Base.getH()/5, "Images/Buttons/play.png");
+        PLAY.setPosX(PLAY.getPosX() - PLAY.getAncho()/2);
+        PLAY.setPosY(PLAY.getPosY() - PLAY.getAlto()/2);
+        RETURN = new Boton(2*Base.getW()/3, 4*Base.getH()/5, "Images/Buttons/return.png");
+        RETURN.setPosX(RETURN.getPosX() - RETURN.getAncho()/2);
+        RETURN.setPosY(RETURN.getPosY() - RETURN.getAlto()/2);
         SELECTION = new Boton(0, 0, "Images/Faces/rect.png");
         PERSONAJES = new Boton[4];
         for (int i = 1; i <= 4; i++) {
