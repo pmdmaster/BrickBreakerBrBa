@@ -56,10 +56,10 @@ public class Ladrillo extends Base {
     private static Animacion crearAnimacionLadrillo() {
         int tipos = 3;
         Animacion anims = new Animacion();
-
+        System.out.println("out");
         anims.sumaCuadro (Toolkit.getDefaultToolkit ().getImage (Pelota.class.getResource ("Images/ladrillo.png" )), 60);
             
-        
+        System.out.println("out");
         return anims;
     }
     
