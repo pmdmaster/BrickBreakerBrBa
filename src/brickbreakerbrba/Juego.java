@@ -232,7 +232,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     }
 
     public void loadNewLevel() {
-        // Lee archivo con posición de ladrillos
+        for(int i = 0; i < 9; i++) {
+            for(int j = 0; j < 2; j++) {
+                ladrillos.add(new Ladrillo (20 + i*81, 20 + j*31,nivel, 1));
+            }
+        }
     }
     
     /**
