@@ -434,6 +434,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.setColor(Color.red);
             g.drawString("Vidas: " + vidas, 20, 105);
             
+            g.setColor(Color.blue);
+            g.drawString("Nivel " + nivel + " de " + niveles, 20, 140);
+            
             if (contador >= 0) {
                 g.drawImage(cont[contador].getImagenI(), cont[contador].getPosX(), cont[contador].getPosY(), this);
             }
