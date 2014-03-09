@@ -17,7 +17,7 @@ public class Ladrillo extends Base {
     private int nivel;
     private boolean visible;
     private int item;
-    private static Animacion[] anims = crearAnimacionLadrillo();
+    private static Animacion anims = crearAnimacionLadrillo();
     
     /**
      * Método constructor de <code>Ladrillo</code>
@@ -27,7 +27,7 @@ public class Ladrillo extends Base {
      * @param it tipo de power-up
      */
     public Ladrillo (int posX, int posY, int niv, int it) {
-        super (posX, posY, anims[niv-1]);
+        super (posX, posY, anims);
         nivel = niv;
         visible = true;
         item = it;
@@ -43,7 +43,7 @@ public class Ladrillo extends Base {
             visible = false;
             return item;
         } else {
-            setAnimacion(anims[nivel-1]);
+            setAnimacion(anims);
         }
         return -1;
     }
@@ -53,14 +53,13 @@ public class Ladrillo extends Base {
      * Crea la animación del ladrillo para el constructor
      * @return un objeto de tipo <code>Animacion</code>
      */
-    private static Animacion[] crearAnimacionLadrillo() {
+    private static Animacion crearAnimacionLadrillo() {
         int tipos = 3;
-        Animacion[] anims = new Animacion[tipos];
-        for (Animacion anim : anims) {
-            for (int i = 0; i <= 20; i++) {
-                anim.sumaCuadro (Toolkit.getDefaultToolkit ().getImage (Pelota.class.getResource ("##################" + i + ".png")), 60);
-            }
-        }
+        Animacion anims = new Animacion();
+
+        anims.sumaCuadro (Toolkit.getDefaultToolkit ().getImage (Pelota.class.getResource ("Images/ladrillo.png" )), 60);
+            
+        
         return anims;
     }
     
