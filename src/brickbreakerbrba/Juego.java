@@ -356,6 +356,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                             }
                         }
                     }
+                    break;
                 }
                 
             }
