@@ -27,8 +27,8 @@ public class Win implements MouseListener {
      */
     public Win(Image background) {
         this.BACKGROUND = background;
-        RETURN = new Boton(Base.getW()/8, Base.getH()/2, "Images/Buttons/return.jpg");
-        QUIT = new Boton(Base.getW()/8, 3*Base.getH()/4, "Images/Buttons/quit.jpg");
+        RETURN = new Boton(Base.getW()/8, Base.getH()/2, "Images/Buttons/return.png");
+        QUIT = new Boton(Base.getW()/8, 3*Base.getH()/4, "Images/Buttons/quit.png");
     }
     /**
      * Dibuja la pantalla menu

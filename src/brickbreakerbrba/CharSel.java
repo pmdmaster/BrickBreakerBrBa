@@ -28,14 +28,14 @@ public class CharSel implements MouseListener {
      */
     public CharSel(Image background) {
         this.BACKGROUND = background;
-        PLAY = new Boton(Base.getW()/4, 6*Base.getH()/7, "Images/Buttons/play.jpg");
-        RETURN = new Boton(3*Base.getW()/4, 6*Base.getH()/7, "Images/Buttons/return.jpg");
-        SELECTION = new Boton(0, 0, "Images/Faces/rect.jpg");
+        PLAY = new Boton(Base.getW()/4, 6*Base.getH()/7, "Images/Buttons/play.png");
+        RETURN = new Boton(3*Base.getW()/4, 6*Base.getH()/7, "Images/Buttons/return.png");
+        SELECTION = new Boton(0, 0, "Images/Faces/rect.png");
         PERSONAJES = new Boton[4];
         for (int i = 1; i <= 4; i++) {
-            PERSONAJES[i] = new Boton(i*Base.getW()/5, 2*Base.getH()/5, "Images/Faces/choice" + i + ".jpg");
-            PERSONAJES[i].setPosX(PERSONAJES[i].getPosX() - PERSONAJES[i].getAncho()/2);
-            PERSONAJES[i].setPosY(PERSONAJES[i].getPosY() - PERSONAJES[i].getAlto()/2);
+            PERSONAJES[i-1] = new Boton(i*Base.getW()/5, 2*Base.getH()/5, "Images/Faces/choice" + i + ".jpg");
+            PERSONAJES[i-1].setPosX(PERSONAJES[i-1].getPosX() - PERSONAJES[i-1].getAncho()/2);
+            PERSONAJES[i-1].setPosY(PERSONAJES[i-1].getPosY() - PERSONAJES[i-1].getAlto()/2);
         }
     }
     

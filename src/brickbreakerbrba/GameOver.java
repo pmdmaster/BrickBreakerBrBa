@@ -27,8 +27,8 @@ public class GameOver implements MouseListener {
      */
     public GameOver(Image background) {
         this.BACKGROUND = background;
-        RETURN = new Boton(Base.getW()/5, Base.getH()/2, "Images/Buttons/return.jpg");
-        QUIT = new Boton(4*Base.getW()/5, Base.getH()/2, "Images/Buttons/quit.jpg");
+        RETURN = new Boton(Base.getW()/5, Base.getH()/2, "Images/Buttons/return.png");
+        QUIT = new Boton(4*Base.getW()/5, Base.getH()/2, "Images/Buttons/quit.png");
         RETURN.setPosX(RETURN.getPosX() - RETURN.getAncho()/2);
         RETURN.setPosY(RETURN.getPosY() - RETURN.getAlto()/2);
         QUIT.setPosX(QUIT.getPosX() - QUIT.getAncho()/2);

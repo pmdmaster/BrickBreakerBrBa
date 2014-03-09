@@ -97,20 +97,16 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         ladrillos = new Vector();
         niveles = 3;
 
-        menuBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/menu.jpg"));
-        helpBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/instrucciones.jpg"));
-        charSelBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/charsel.jpg"));
-        gameOverBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/gameover.jpg"));
-        winBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/win.jpg"));
+        menuBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Background/menu.jpg"));
+        helpBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Background/instrucciones.jpg"));
+        charSelBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Background/charsel.jpg"));
+        gameOverBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Background/gameover.jpg"));
+        winBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Background/win.jpg"));
+        levelBG = new Image[niveles];
         for (int i = 1; i <= niveles; i++) {
-            levelBG[i] = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/lvl" + i + ".jpg"));
+            levelBG[i-1] = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Background/lvl" + i + ".jpg"));
         }
         cont = new Boton[3];
-        for (int i = 0; i < 3; i++) {
-            cont[i] = new Boton(0, 0, "Images/background/background.jpg");
-            cont[i].setPosX(getWidth()/2 - cont[i].getAncho()/2);
-            cont[i].setPosY(getHeight()/2 - cont[i].getAlto()/2);
-        }
 
         State = STATE.MENU;
         menu = new Menu(menuBG);
@@ -132,9 +128,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         //Pinta el fondo del Applet de color blanco
         setBackground(Color.white);
-        shoot = new SoundClip("Sounds/failS.wav");
-        bang = new SoundClip("Sounds/hoopS.wav");
-
+        shoot = new SoundClip("Sounds/caida.wav");
+        bang = new SoundClip("Sounds/colision.wav");
+        
     }
 
     /**
