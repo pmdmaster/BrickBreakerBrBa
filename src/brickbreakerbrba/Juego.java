@@ -68,6 +68,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     public static long tiempo;
     public static boolean jugando;
     public static boolean startGame;
+    public static boolean changeToGame;
 
     //Variables de control de tiempo de la animacion
     private long tiempoActual;
@@ -94,9 +95,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         Base.setW(getWidth());
         Base.setH(getHeight());
         pelota = new Pelota();
-        barra = new Barra(getWidth()/2, 5*getHeight()/6);
+        
         ladrillos = new Vector();
-        loadNewLevel();
         niveles = 3;
 
         menuBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Background/menu.jpg"));
@@ -169,6 +169,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 setVisible(false);
                 System.exit(0);
             }
+            if (changeToGame) {
+                    startGame = true;
+                    tiempo = System.currentTimeMillis();
+                    State = STATE.GAME;
+                    loadNewLevel();
+
+            }
             if (State == STATE.GAME) {
                 if (!pausa) {
                     //Actualiza la animacion
@@ -236,6 +243,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     }
 
     public void loadNewLevel() {
+        barra = new Barra(getWidth()/2, 5*getHeight()/6);
         for(int i = 0; i < 9; i++) {
             for(int j = 0; j < 2; j++) {
                 ladrillos.add(new Ladrillo (20 + i*81, 20 + j*31,nivel, 1));

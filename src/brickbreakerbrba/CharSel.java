@@ -68,9 +68,7 @@ public class CharSel implements MouseListener {
             
             if (PLAY.contiene(e.getX(), e.getY())) {
                 if (Juego.jugador != -1) {
-                    Juego.startGame = true;
-                    Juego.tiempo = System.currentTimeMillis();
-                    Juego.State = Juego.STATE.GAME;
+                    Juego.changeToGame = true;
                 }
             } else if (RETURN.contiene (e.getX(), e.getY())) {
                 Juego.State = Juego.STATE.MENU;
