@@ -33,9 +33,9 @@ public class Barra extends Base {
      */
     private static Animacion getAnimacion() {
         Animacion anim = new Animacion();
-        //for (int i = 0; i <= 8; i++) {
-        anim.sumaCuadro (Toolkit.getDefaultToolkit ().getImage (Barra.class.getResource ("Images/bar.png")), 200);
-        //}
+        for (int i = 1; i <=3; i++) {
+            anim.sumaCuadro (Toolkit.getDefaultToolkit ().getImage (Barra.class.getResource ("Images/Faces/per" + Juego.jugador + "3" + i +".png")), 200);
+        }
         return anim;
     }
     
