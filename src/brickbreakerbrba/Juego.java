@@ -275,7 +275,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             
             if (contador < 0) {
                 startGame = false;
-                pelota.lanzar(nivel + 3);
+                pelota.lanzar(nivel + 4);
             } else {
                 pelota.setPosX(barra.getPosX() + barra.getAncho()/2 - pelota.getAncho()/2);
                 pelota.setPosY(barra.getPosY() - pelota.getAlto());
@@ -402,7 +402,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             //g.setColor(Color.RED);
             //g.fillRect(0, 0, getWidth(), getHeight());
             // Muestra en pantalla el cuadro actual de la animación
-            g.drawImage(levelBG[nivel], 0, 0, this);    // Imagen de background
+            g.drawImage(levelBG[nivel-1], 0, 0, this);    // Imagen de background
 
             if (pelota != null && pelota.getImagenI() != null) {
                 g.drawImage(pelota.getImagenI(), pelota.getPosX(), pelota.getPosY(), this);
@@ -423,7 +423,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
 
             g.setColor(Color.green);
-            g.drawString("Score: " + score, 20, 55);
+            g.drawString("Score: " + score, 20, 70);
 
             g.setColor(Color.red);
             g.drawString("Vidas: " + vidas, 20, 105);
