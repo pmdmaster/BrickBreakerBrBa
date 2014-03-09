@@ -340,6 +340,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 Ladrillo ladrillo = ladrillos.elementAt(i);
                 if(pelota.colisiona(ladrillo)) {
                     ladrillo.hit();
+                    score += 100;
                     if(!ladrillo.getVisible()) {
                         ladrillos.removeElementAt(i);
                         i--;
