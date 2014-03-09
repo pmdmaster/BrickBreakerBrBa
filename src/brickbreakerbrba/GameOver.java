@@ -15,22 +15,23 @@ import java.awt.event.MouseListener;
  *
  * @author Alberto
  */
-public class Help implements MouseListener {
+public class GameOver implements MouseListener {
     
     private final Boton RETURN;
+    private final Boton QUIT;
     private final Image BACKGROUND;
     
     /**
      * Metodo constructor
      * @param background imagen de fondo
      */
-    public Help(Image background) {
+    public GameOver(Image background) {
         this.BACKGROUND = background;
         RETURN = new Boton(0, 0, "Images/Buttons/return.jpg");
+        QUIT = new Boton(0, 0, "Images/Buttons/quit.jpg");
     }
-    
     /**
-     * Dibuja la pantalla de ayuda
+     * Dibuja la pantalla menu
      * @param g
      * @param juego
      */
@@ -38,6 +39,7 @@ public class Help implements MouseListener {
         
         g.drawImage(BACKGROUND, 0, 0, juego);
         g.drawImage(RETURN.getImagenI(), RETURN.getPosX(), RETURN.getPosY(), juego);
+        g.drawImage(QUIT.getImagenI(), QUIT.getPosX(), QUIT.getPosY(), juego);
         
     }
 
@@ -47,9 +49,11 @@ public class Help implements MouseListener {
      */
     @Override
     public void mouseClicked (MouseEvent e) {
-        if (Juego.State == Juego.STATE.HELP) {
+        if(Juego.State == Juego.STATE.GAMEOVER) {
             if (RETURN.contiene (e.getX(), e.getY())) {
                 Juego.State = Juego.STATE.MENU;
+            } else if (QUIT.contiene(e.getX(), e.getY())) {
+                Juego.jugando = false;
             }
         }
     }

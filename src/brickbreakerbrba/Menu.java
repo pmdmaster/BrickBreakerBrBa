@@ -19,9 +19,9 @@ public class Menu implements MouseListener {
     
     
 
-    private Boton playButton;
-    private Boton helpButton;
-    private Boton quitButton;
+    private final Boton PLAY;
+    private final Boton HELP;
+    private final Boton QUIT;
     private final Image BACKGROUND;
     
     /**
@@ -30,9 +30,9 @@ public class Menu implements MouseListener {
      */
     public Menu(Image background) {
         this.BACKGROUND = background;
-        playButton = new Boton(3*Base.getW()/4, Base.getH()/4, "Images/Buttons/play.jpg");
-        helpButton = new Boton(3*Base.getW()/4, Base.getH()/2, "Images/Buttons/help.jpg");
-        quitButton = new Boton(3*Base.getW()/4, 3*Base.getH()/4, "Images/Buttons/quit.jpg");
+        PLAY = new Boton(3*Base.getW()/4, Base.getH()/4, "Images/Buttons/play.jpg");
+        HELP = new Boton(3*Base.getW()/4, Base.getH()/2, "Images/Buttons/help.jpg");
+        QUIT = new Boton(3*Base.getW()/4, 3*Base.getH()/4, "Images/Buttons/quit.jpg");
     }
     /**
      * Dibuja la pantalla menu
@@ -42,9 +42,9 @@ public class Menu implements MouseListener {
     public void render(Graphics g, Juego juego) {
         
         g.drawImage(BACKGROUND, 0, 0, juego);
-        g.drawImage(playButton.getImagenI(), playButton.getPosX(), playButton.getPosY(), juego);
-        g.drawImage(helpButton.getImagenI(), helpButton.getPosX(), helpButton.getPosY(), juego);
-        g.drawImage(quitButton.getImagenI(), quitButton.getPosX(), quitButton.getPosY(), juego);
+        g.drawImage(PLAY.getImagenI(), PLAY.getPosX(), PLAY.getPosY(), juego);
+        g.drawImage(HELP.getImagenI(), HELP.getPosX(), HELP.getPosY(), juego);
+        g.drawImage(QUIT.getImagenI(), QUIT.getPosX(), QUIT.getPosY(), juego);
         
     }
 
@@ -55,11 +55,11 @@ public class Menu implements MouseListener {
     @Override
     public void mouseClicked (MouseEvent e) {
         if(Juego.State == Juego.STATE.MENU) {
-            if (playButton.contiene (e.getX(), e.getY())) {
+            if (PLAY.contiene (e.getX(), e.getY())) {
                 Juego.State = Juego.STATE.CHARSEL;
-            } else if (helpButton.contiene(e.getX(), e.getY())) {
+            } else if (HELP.contiene(e.getX(), e.getY())) {
                 Juego.State = Juego.STATE.HELP;
-            } else if (quitButton.contiene(e.getX(), e.getY())) {
+            } else if (QUIT.contiene(e.getX(), e.getY())) {
                 Juego.jugando = false;
             }
         }

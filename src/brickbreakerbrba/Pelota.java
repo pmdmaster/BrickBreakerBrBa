@@ -6,7 +6,6 @@
 
 package brickbreakerbrba;
 
-import java.awt.Point;
 import java.awt.Toolkit;
 
 /**
@@ -25,7 +24,7 @@ public class Pelota extends Base {
         super(posX, posY, getAnimacion());
         vX = velX;
         initX = posX;
-        vY = initY = velY;
+        vY = velY;
         initY = posY;
     }
     

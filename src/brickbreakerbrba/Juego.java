@@ -33,7 +33,6 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private boolean sound;
     private int vidas;
     private int score;
-    private int tiempo;
     private int niveles;
     private int nivel;
     private int contador;
@@ -43,7 +42,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Image helpBG;
     private Image charSelBG;
     private Image[] levelBG;
-    private Image gameoverBG;
+    private Image gameOverBG;
     private Image pause;
     private Boton[] cont;
     private Graphics dbg;
@@ -51,6 +50,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private SoundClip shoot;
     private Menu menu;
     private CharSel charSel;
+    private GameOver gameOver;
     private Help help;
     
     public static enum STATE {
@@ -62,6 +62,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     };
     public static STATE State;
     public static int jugador = -1;
+    public static long tiempo;
     public static boolean jugando;
     public static boolean startGame;
 
@@ -96,7 +97,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         menuBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/background.jpg"));
         helpBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/instrucciones.jpg"));
         charSelBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/background.jpg"));
-        gameoverBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/gameover2.jpg"));
+        gameOverBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/gameover2.jpg"));
         for (int i = 0; i < niveles; i++) {
             levelBG[i] = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/background.jpg"));
         }
@@ -111,6 +112,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         menu = new Menu(menuBG);
         charSel = new CharSel(charSelBG);
         help = new Help(helpBG);
+        gameOver = new GameOver(gameOverBG);
         
         pause = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pause.png"));
 
@@ -237,23 +239,26 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         //Guarda el tiempo actual
         tiempoActual += tiempoTranscurrido;
 
+        
+        if (barra.getMoveLeft()) {
+            barra.setPosX(barra.getPosX() - 4);
+        }
+        if (barra.getMoveRight()) {
+            barra.setPosX(barra.getPosX() + 4);
+        }
+
         if (startGame) {
             
             contador = 2 - (int)(System.currentTimeMillis() - tiempo) / TCONTADOR;
             if (contador < 0) {
                 startGame = false;
                 pelota.lanzar();
+            } else {
+                pelota.setPosX(barra.getPosX() + barra.getAncho()/2 - pelota.getAncho()/2);
+                pelota.setPosY(barra.getPosY() - pelota.getAlto());
             }
             
         } else {
-        
-            if (barra.getMoveLeft()) {
-                barra.setPosX(barra.getPosX() - 4);
-            }
-            if (barra.getMoveRight()) {
-                barra.setPosX(barra.getPosX() + 4);
-            }
-
             pelota.avanza();
         }
 
@@ -284,9 +289,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 if (sound) {
                     shoot.play();
                 }
-                pelota.reaparecer();
+                startGame = true;
+                tiempo = System.currentTimeMillis();
                 vidas--;
-
+                if (vidas == 0) {
+                    State = STATE.GAMEOVER;
+                }
             }
             
             // Colision de pelota con barra
@@ -382,6 +390,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             help.render(g, this);
         } else if (State == STATE.CHARSEL) {
             charSel.render(g, this);
+        } else if (State == STATE.GAMEOVER) {
+            gameOver.render(g, this);
         }
     }
 
