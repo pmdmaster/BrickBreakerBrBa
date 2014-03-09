@@ -94,6 +94,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         Base.setW(getWidth());
         Base.setH(getHeight());
         pelota = new Pelota();
+        barra = new Barra(getWidth()/2, 5*getHeight()/6);
         ladrillos = new Vector();
         niveles = 3;
 
