@@ -48,7 +48,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private SoundClip bang;
     private SoundClip shoot;
     private Menu menu;
-    private SeleccionUsuario charsel;
+    private CharSel charsel;
     public static int jugador = -1;
 
     public static enum STATE {
@@ -99,7 +99,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         State = STATE.MENU;
         menu = new Menu(menuBG);
-        charsel = new SeleccionUsuario(charSelBG);
+        charsel = new CharSel(charSelBG);
         
         pause = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pause.png"));
 
