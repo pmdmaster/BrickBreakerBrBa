@@ -52,21 +52,24 @@ public class CharSel implements MouseListener {
 
     @Override
     public void mouseClicked (MouseEvent e) {
-        
-        if (PLAY.contiene(e.getX(), e.getY())) {
-            if (Juego.jugador != -1) {
-                Juego.State = Juego.STATE.GAME;
-            }
-        } else if (RETURN.contiene (e.getX(), e.getY())) {
-            Juego.State = Juego.STATE.MENU;
-        } else {
-            for (int i = 0; i < 4; i++) {
-                if (PERSONAJES[i].contiene(e.getX(), e.getY())) {
-                    Juego.jugador = i;
-                    SELECTION.setPosX(PERSONAJES[i].getPosX());
-                    SELECTION.setPosY(PERSONAJES[i].getPosY());
+        if (Juego.State == Juego.STATE.CHARSEL) {
+            
+            if (PLAY.contiene(e.getX(), e.getY())) {
+                if (Juego.jugador != -1) {
+                    Juego.State = Juego.STATE.GAME;
+                }
+            } else if (RETURN.contiene (e.getX(), e.getY())) {
+                Juego.State = Juego.STATE.MENU;
+            } else {
+                for (int i = 0; i < 4; i++) {
+                    if (PERSONAJES[i].contiene(e.getX(), e.getY())) {
+                        Juego.jugador = i;
+                        SELECTION.setPosX(PERSONAJES[i].getPosX());
+                        SELECTION.setPosY(PERSONAJES[i].getPosY());
+                    }
                 }
             }
+        
         }
         
     }

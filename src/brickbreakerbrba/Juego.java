@@ -1,7 +1,6 @@
 package brickbreakerbrba;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -48,7 +47,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private SoundClip bang;
     private SoundClip shoot;
     private Menu menu;
-    private CharSel charsel;
+    private CharSel charSel;
+    private Help help;
     public static int jugador = -1;
 
     public static enum STATE {
@@ -87,6 +87,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         Base.setW(getWidth());
         Base.setH(getHeight());
         pelota = new Pelota(getWidth() / 2, getHeight() - 50, 0, 0);
+        ladrillos = new Vector();
         niveles = 3;
 
         menuBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/background.jpg"));
@@ -99,7 +100,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         State = STATE.MENU;
         menu = new Menu(menuBG);
-        charsel = new CharSel(charSelBG);
+        charSel = new CharSel(charSelBG);
+        help = new Help(helpBG);
         
         pause = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pause.png"));
 
@@ -339,9 +341,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         } else if (State == STATE.MENU) {
             menu.render(g);
         } else if (State == STATE.HELP) {
-            
+            help.render(g);
         } else if (State == STATE.CHARSEL) {
-            
+            charSel.render(g);
         }
     }
 

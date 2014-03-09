@@ -45,14 +45,15 @@ public class Menu implements MouseListener {
 
     @Override
     public void mouseClicked (MouseEvent e) {
-        if (playButton.contiene (e.getX(), e.getY())) {
-            Juego.State = Juego.STATE.CHARSEL;
-        } else if (helpButton.contiene(e.getX(), e.getY())) {
-            Juego.State = Juego.STATE.HELP;
-        } else if (quitButton.contiene(e.getX(), e.getY())) {
-            Juego.jugando = false;
+        if(Juego.State == Juego.STATE.MENU) {
+            if (playButton.contiene (e.getX(), e.getY())) {
+                Juego.State = Juego.STATE.CHARSEL;
+            } else if (helpButton.contiene(e.getX(), e.getY())) {
+                Juego.State = Juego.STATE.HELP;
+            } else if (quitButton.contiene(e.getX(), e.getY())) {
+                Juego.jugando = false;
+            }
         }
-        
     }
 
     @Override

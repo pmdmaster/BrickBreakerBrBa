@@ -15,12 +15,12 @@ import java.awt.event.MouseListener;
  *
  * @author Alberto
  */
-public class Instrucciones implements MouseListener {
+public class Help implements MouseListener {
     
     private Boton returnButton;
     private final Image BACKGROUND;
     
-    public Instrucciones(Image background) {
+    public Help(Image background) {
         this.BACKGROUND = background;
         returnButton = new Boton(0, 0, "Images/Buttons/return.jpg");
     }
@@ -37,10 +37,11 @@ public class Instrucciones implements MouseListener {
 
     @Override
     public void mouseClicked (MouseEvent e) {
-        if (returnButton.contiene (e.getX(), e.getY())) {
-            Juego.State = Juego.STATE.MENU;
+        if (Juego.State == Juego.STATE.HELP) {
+            if (returnButton.contiene (e.getX(), e.getY())) {
+                Juego.State = Juego.STATE.MENU;
+            }
         }
-        
     }
 
     @Override
