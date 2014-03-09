@@ -174,7 +174,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                     tiempo = System.currentTimeMillis();
                     State = STATE.GAME;
                     loadNewLevel();
-
+                    changeToGame = false;
             }
             if (State == STATE.GAME) {
                 if (!pausa) {
@@ -272,6 +272,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         if (startGame) {
             
             contador = 2 - (int)(System.currentTimeMillis() - tiempo) / TCONTADOR;
+            
             if (contador < 0) {
                 startGame = false;
                 pelota.lanzar(nivel + 3);
@@ -310,6 +311,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 } else {
                     pelota.setAng(3*Math.PI - pelota.getAng());
                 }
+            }
+            if (pelota.getPosY() < 0) {
+                pelota.setAng(2*Math.PI - pelota.getAng());
             }
             if (pelota.getPosY() > getHeight() + 10) {
                 if (sound) {
