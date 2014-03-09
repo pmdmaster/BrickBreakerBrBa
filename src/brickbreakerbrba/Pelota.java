@@ -140,4 +140,26 @@ public class Pelota extends Base {
         setPosY(initY);
         mov = false;
     }
+    
+    /**
+     * Checa si la pelota colisiona con otro objeto, y cambia su direccion
+     * @param otro objeto de tipo <code>Base</code>
+     * @return <code>boolean</code>
+     */
+    public boolean colisiona(Base otro) {
+        if (hitUp(otro)) {
+            setVy(-getVy());
+            return true;
+        } else if (hitDown(otro)) {
+            setVy(-getVy());
+            return true;
+        } else if (hitLeft(otro)) {
+            setVx(-getVx());
+            return true;
+        } else if (hitRight(otro)) {
+            setVx(-getVx());
+            return true;
+        }
+        return false;
+    }
 }

@@ -27,28 +27,18 @@ public class Ladrillo extends Base {
     }
     
     /**
-     * Disminuye la vida de un ladrillo de acuerdo a su nivel
-     * Si la vida es menor a uno regresa verdadero para ser destruido
-     * @return Si el nivel es mayor o igual a 1
+     * Se llama cuando la pelota golpea al ladrillo
+     * @return el tipo de <code>Item</code> que contiene.
      */
-    public boolean disminuir() {
+    public int hit() {
         nivel--;
-        if (nivel >= 1) {
-            setAnimacion(getAnim(nivel));
-            return true;
-        } else {
-            return false;
+        if (nivel == 0) {
+            visible = false;
+            return item;
         }
+        return -1;
     }
     
-    /**
-     * Cambia el parametro de visibilidad a falso
-     * @return el valor que tenía de cadaa item
-     */
-    public int desaparece() {
-        visible = false;
-        return item;
-    }
     
     /**
      * Crea la animación del ladrillo para el constructor

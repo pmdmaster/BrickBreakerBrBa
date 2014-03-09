@@ -33,9 +33,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private boolean sound;
     private int vidas;
     private int score;
-    private int tMensaje;
+    private int tiempo;
     private int niveles;
     private int nivel;
+    private int contador;
+    private final int TCONTADOR = 500;
     private Image dbImage;
     private Image menuBG;
     private Image helpBG;
@@ -43,24 +45,25 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Image[] levelBG;
     private Image gameoverBG;
     private Image pause;
+    private Boton[] cont;
     private Graphics dbg;
     private SoundClip bang;
     private SoundClip shoot;
     private Menu menu;
     private CharSel charSel;
     private Help help;
-    public static int jugador = -1;
-
+    
     public static enum STATE {
-
         MENU,
         HELP,
         CHARSEL,
         GAME,
-        GAMEOVER,
+        GAMEOVER
     };
     public static STATE State;
-    public static boolean jugando = true;
+    public static int jugador = -1;
+    public static boolean jugando;
+    public static boolean startGame;
 
     //Variables de control de tiempo de la animacion
     private long tiempoActual;
@@ -97,6 +100,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         for (int i = 0; i < niveles; i++) {
             levelBG[i] = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/background.jpg"));
         }
+        cont = new Boton[3];
+        for (int i = 0; i < 3; i++) {
+            cont[i] = new Boton(0, 0, "Images/background/background.jpg");
+            cont[i].setPosX(getWidth()/2 - cont[i].getAncho()/2);
+            cont[i].setPosY(getHeight()/2 - cont[i].getAlto()/2);
+        }
 
         State = STATE.MENU;
         menu = new Menu(menuBG);
@@ -107,9 +116,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         pausa = false;
         sound = true;
-        tMensaje = 500;
         vidas = 3;
         score = 0;
+
+        jugando = true;
+        startGame = false;
 
         //Pinta el fondo del Applet de color blanco
         setBackground(Color.white);
@@ -226,14 +237,25 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         //Guarda el tiempo actual
         tiempoActual += tiempoTranscurrido;
 
-        if (barra.getMoveLeft()) {
-            barra.setPosX(barra.getPosX() - 4);
-        }
-        if (barra.getMoveRight()) {
-            barra.setPosX(barra.getPosX() + 4);
-        }
+        if (startGame) {
+            
+            contador = 2 - (int)(System.currentTimeMillis() - tiempo) / TCONTADOR;
+            if (contador < 0) {
+                startGame = false;
+                pelota.lanzar();
+            }
+            
+        } else {
+        
+            if (barra.getMoveLeft()) {
+                barra.setPosX(barra.getPosX() - 4);
+            }
+            if (barra.getMoveRight()) {
+                barra.setPosX(barra.getPosX() + 4);
+            }
 
-        pelota.avanza();
+            pelota.avanza();
+        }
 
         //Actualiza la animación en base al tiempo transcurrido
         barra.actualiza(tiempoTranscurrido);
@@ -245,15 +267,18 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * del <code>Applet</code> y entre si.
      */
     public void checaColision() {
-        if (State == State.GAME) {
+        if (State == STATE.GAME) {
+            // Colision de barra con JFrame
             if (barra.getPosX() < 0) {
                 barra.setPosX(0);
             }
             if (barra.getPosX() + barra.getAncho() > getWidth()) {
                 barra.setPosX(getWidth() - barra.getAncho());
             }
+            
+            // Colision de pelota con JFrame
             if ((pelota.getPosX() < 0) || (pelota.getPosX() + pelota.getAncho() > getWidth())) {
-                pelota.setVx((-1) * pelota.getVx());
+                pelota.setVx(-pelota.getVx());
             }
             if (pelota.getPosY() > getHeight() + 10) {
                 if (sound) {
@@ -263,12 +288,21 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 vidas--;
 
             }
-            if (pelota.intersects(barra)) {
+            
+            // Colision de pelota con barra
+            if (pelota.colisiona(barra)) {
 
                 if (sound) {
                     bang.play();
                 }
-                pelota.setVy((-1) * pelota.getVy());
+            }
+            
+            // Colision de pelota con ladrillos
+            for (Ladrillo ladrillo : ladrillos) {
+
+                if(pelota.colisiona(ladrillo)) {
+                    ladrillo.hit();
+                }
             }
         }
     }
@@ -338,12 +372,16 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.setColor(Color.red);
             g.drawString("Vidas: " + vidas, 20, 105);
             
+            if (contador >= 0) {
+                g.drawImage(cont[contador].getImagenI(), cont[contador].getPosX(), cont[contador].getPosY(), this);
+            }
+            
         } else if (State == STATE.MENU) {
-            menu.render(g);
+            menu.render(g, this);
         } else if (State == STATE.HELP) {
-            help.render(g);
+            help.render(g, this);
         } else if (State == STATE.CHARSEL) {
-            charSel.render(g);
+            charSel.render(g, this);
         }
     }
 

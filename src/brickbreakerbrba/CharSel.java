@@ -40,17 +40,18 @@ public class CharSel implements MouseListener {
     /**
      * Dibuja la pantalla de seleccion de personajes
      * @param g
+     * @param juego
      */
-    public void render(Graphics g) {
+    public void render(Graphics g, Juego juego) {
         
-        g.drawImage(BACKGROUND, 0, 0, null);
-        g.drawImage(PLAY.getImagenI(), PLAY.getPosX(), PLAY.getPosY(), null);
-        g.drawImage(RETURN.getImagenI(), RETURN.getPosX(), RETURN.getPosY(), null);
+        g.drawImage(BACKGROUND, 0, 0, juego);
+        g.drawImage(PLAY.getImagenI(), PLAY.getPosX(), PLAY.getPosY(), juego);
+        g.drawImage(RETURN.getImagenI(), RETURN.getPosX(), RETURN.getPosY(), juego);
         for (int i = 0; i < 4; i++) {
-            g.drawImage(PERSONAJES[i].getImagenI(), PERSONAJES[i].getPosX(), PERSONAJES[i].getPosY(), null);
+            g.drawImage(PERSONAJES[i].getImagenI(), PERSONAJES[i].getPosX(), PERSONAJES[i].getPosY(), juego);
         }
         if (Juego.jugador != -1) {
-            g.drawImage(SELECTION.getImagenI(), SELECTION.getPosX(), SELECTION.getPosY(), null);
+            g.drawImage(SELECTION.getImagenI(), SELECTION.getPosX(), SELECTION.getPosY(), juego);
         }
         
     }

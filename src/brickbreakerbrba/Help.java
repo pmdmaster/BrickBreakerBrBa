@@ -32,11 +32,12 @@ public class Help implements MouseListener {
     /**
      * Dibuja la pantalla de ayuda
      * @param g
+     * @param juego
      */
-    public void render(Graphics g) {
+    public void render(Graphics g, Juego juego) {
         
-        g.drawImage(BACKGROUND, 0, 0, null);
-        g.drawImage(returnButton.getImagenI(), returnButton.getPosX(), returnButton.getPosY(), null);
+        g.drawImage(BACKGROUND, 0, 0, juego);
+        g.drawImage(returnButton.getImagenI(), returnButton.getPosX(), returnButton.getPosY(), juego);
         
     }
 

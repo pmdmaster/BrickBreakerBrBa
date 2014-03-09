@@ -37,13 +37,14 @@ public class Menu implements MouseListener {
     /**
      * Dibuja la pantalla menu
      * @param g
+     * @param juego
      */
-    public void render(Graphics g) {
+    public void render(Graphics g, Juego juego) {
         
-        g.drawImage(BACKGROUND, 0, 0, null);
-        g.drawImage(playButton.getImagenI(), playButton.getPosX(), playButton.getPosY(), null);
-        g.drawImage(helpButton.getImagenI(), helpButton.getPosX(), helpButton.getPosY(), null);
-        g.drawImage(quitButton.getImagenI(), quitButton.getPosX(), quitButton.getPosY(), null);
+        g.drawImage(BACKGROUND, 0, 0, juego);
+        g.drawImage(playButton.getImagenI(), playButton.getPosX(), playButton.getPosY(), juego);
+        g.drawImage(helpButton.getImagenI(), helpButton.getPosX(), helpButton.getPosY(), juego);
+        g.drawImage(quitButton.getImagenI(), quitButton.getPosX(), quitButton.getPosY(), juego);
         
     }
 
