@@ -8,6 +8,8 @@ package brickbreakerbrba;
 
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.net.URL;
 import javax.swing.ImageIcon;
 
 /**
@@ -28,6 +30,20 @@ public class Boton {
     public Boton(int posX, int posY, Image image) {
         this.posX = posX;
         this.posY = posY;
+        icono = new ImageIcon(image);
+    }
+    
+    /**
+     * Metodo constructor usado para crear el objeto
+     * @param posX coordenada X
+     * @param posY coordenada Y
+     * @param fileName nombre del archivo donde se encuentra la imagen
+     */
+    public Boton(int posX, int posY, String fileName) {
+        this.posX = posX;
+        this.posY = posY;
+        URL url = this.getClass().getResource(fileName);
+        Image image = Toolkit.getDefaultToolkit().getImage(url);
         icono = new ImageIcon(image);
     }
     

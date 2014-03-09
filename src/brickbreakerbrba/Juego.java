@@ -31,23 +31,28 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Barra barra;
     private Vector<Ladrillo> ladrillos;
     private boolean pausa;
-    private boolean instrucciones;
-    private boolean entrando;
     private boolean sound;
-    public static boolean jugando = true;
     private int vidas;
     private int score;
     private int tMensaje;
+    private int niveles;
+    private int nivel;
     private Image dbImage;
-    private Image background;
-    private Image gameover;
-    private Image instructionBack;
+    private Image menuBG;
+    private Image helpBG;
+    private Image charSelBG;
+    private Image[] levelBG;
+    private Image gameoverBG;
     private Image pause;
     private Graphics dbg;
     private SoundClip bang;
     private SoundClip shoot;
     private Menu menu;
-    public static enum STATE{
+    private SeleccionUsuario charsel;
+    public static int jugador = -1;
+
+    public static enum STATE {
+
         MENU,
         HELP,
         CHARSEL,
@@ -55,6 +60,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         GAMEOVER,
     };
     public static STATE State;
+    public static boolean jugando = true;
 
     //Variables de control de tiempo de la animacion
     private long tiempoActual;
@@ -80,23 +86,29 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         addMouseListener(this);
         Base.setW(getWidth());
         Base.setH(getHeight());
-        pelota = new Pelota(getWidth()/2, getHeight() - 50, 0,0);
+        pelota = new Pelota(getWidth() / 2, getHeight() - 50, 0, 0);
+        niveles = 3;
+
+        menuBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/background.jpg"));
+        helpBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/instrucciones.jpg"));
+        charSelBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/background.jpg"));
+        gameoverBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/gameover2.jpg"));
+        for (int i = 0; i < niveles; i++) {
+            levelBG[i] = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/background.jpg"));
+        }
 
         State = STATE.MENU;
-        menu = new Menu();
-        background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/background.jpg"));
+        menu = new Menu(menuBG);
+        charsel = new SeleccionUsuario(charSelBG);
+        
         pause = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pause.png"));
-        instructionBack = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/instrucciones.jpg"));
-        gameover = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/gameover2.jpg"));
 
         pausa = false;
-        instrucciones = false;
-        entrando = false;
         sound = true;
         tMensaje = 500;
-        vidas = 5;
+        vidas = 3;
         score = 0;
-        
+
         //Pinta el fondo del Applet de color blanco
         setBackground(Color.white);
         shoot = new SoundClip("Sounds/failS.wav");
@@ -132,10 +144,16 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         //Ciclo principal del Applet. Actualiza y despliega en pantalla la 
         //animacion hasta que el Applet sea cerrado
         while (true) {
-            if (!pausa && !instrucciones) {
-                //Actualiza la animacion
-                actualiza();
-                checaColision();
+            if (!jugando) {
+                setVisible(false);
+                disable();
+            }
+            if (State == STATE.GAME) {
+                if (!pausa) {
+                    //Actualiza la animacion
+                    actualiza();
+                    checaColision();
+                }
             }
             //Manda a llamar al metodo paint() para mostrar en pantalla la animación
             repaint();
@@ -171,10 +189,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         pausa = Boolean.parseBoolean(arr[0]);
         vidas = Integer.parseInt(arr[1]);
         score = Integer.parseInt(arr[2]);
-        
-        
+
         pelota.assingData(arr);
-        
+
         sound = Boolean.parseBoolean(arr[7]);
         fileIn.close();
 
@@ -187,15 +204,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      */
     public void grabaArchivo() throws IOException {
         //guarda cuando no se encuentra en instrucciones
-        if (!instrucciones) {
-            try {
-                PrintWriter fileOut = new PrintWriter(new FileWriter(nombreArchivo));
+        try {
+            PrintWriter fileOut = new PrintWriter(new FileWriter(nombreArchivo));
 
-                fileOut.println(String.valueOf(pausa) + "," + String.valueOf(vidas) + "," + String.valueOf(score) + "," + pelota.getData() +  "," + String.valueOf(sound));
-                fileOut.close();
-            } catch (FileNotFoundException e) {
+            fileOut.println(String.valueOf(pausa) + "," + String.valueOf(vidas) + "," + String.valueOf(score) + "," + pelota.getData() + "," + String.valueOf(sound));
+            fileOut.close();
+        } catch (FileNotFoundException e) {
 
-            }
         }
     }
 
@@ -203,31 +218,24 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * El método actualiza() actualiza la animación
      */
     public void actualiza() {
-        if(State == State.GAME) {
-            //Determina el tiempo que ha transcurrido desde que el Applet inicio su ejecución
-            long tiempoTranscurrido = System.currentTimeMillis() - tiempoActual;
+        //Determina el tiempo que ha transcurrido desde que el Applet inicio su ejecución
+        long tiempoTranscurrido = System.currentTimeMillis() - tiempoActual;
 
-            //Guarda el tiempo actual
-            tiempoActual += tiempoTranscurrido;
+        //Guarda el tiempo actual
+        tiempoActual += tiempoTranscurrido;
 
-            if (barra.getMoveLeft()) {
-                barra.setPosX(barra.getPosX() - 4);
-            }
-            if (barra.getMoveRight()) {
-                barra.setPosX(barra.getPosX() + 4);
-            }
-
-            pelota.avanza();
-            if (entrando) {
-                pelota.setPosX(barra.getPosX() + barra.getAncho() / 2 - pelota.getAncho() / 2);
-            }
-
-            //Actualiza la animación en base al tiempo transcurrido
-            barra.actualiza(tiempoTranscurrido);
-            if (pelota.getMov()) {
-                pelota.actualiza(tiempoTranscurrido);
-            }
+        if (barra.getMoveLeft()) {
+            barra.setPosX(barra.getPosX() - 4);
         }
+        if (barra.getMoveRight()) {
+            barra.setPosX(barra.getPosX() + 4);
+        }
+
+        pelota.avanza();
+
+        //Actualiza la animación en base al tiempo transcurrido
+        barra.actualiza(tiempoTranscurrido);
+        pelota.actualiza(tiempoTranscurrido);
     }
 
     /**
@@ -235,30 +243,30 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * del <code>Applet</code> y entre si.
      */
     public void checaColision() {
-        if(State == State.GAME) {
+        if (State == State.GAME) {
             if (barra.getPosX() < 0) {
                 barra.setPosX(0);
             }
             if (barra.getPosX() + barra.getAncho() > getWidth()) {
                 barra.setPosX(getWidth() - barra.getAncho());
             }
-            if((pelota.getPosX() < 0) || (pelota.getPosX() + pelota.getAncho () > getWidth())) {
-                pelota.setVx((-1)*pelota.getVx());
+            if ((pelota.getPosX() < 0) || (pelota.getPosX() + pelota.getAncho() > getWidth())) {
+                pelota.setVx((-1) * pelota.getVx());
             }
             if (pelota.getPosY() > getHeight() + 10) {
-                if ( sound) {
+                if (sound) {
                     shoot.play();
                 }
                 pelota.reaparecer();
                 vidas--;
-      
+
             }
             if (pelota.intersects(barra)) {
 
                 if (sound) {
                     bang.play();
                 }
-                pelota.setVy((-1)*pelota.getVy());
+                pelota.setVy((-1) * pelota.getVy());
             }
         }
     }
@@ -298,13 +306,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * @param g es el <code>objeto grafico</code> usado para dibujar.
      */
     public void paint1(Graphics g) {
-        if(State == STATE.GAME) {
+        if (State == STATE.GAME) {
             //g.setColor(Color.RED);
             //g.fillRect(0, 0, getWidth(), getHeight());
             // Muestra en pantalla el cuadro actual de la animación
-            g.drawImage(background, 0, 0, this);    // Imagen de background
-            if (pelota != null && pelota.getImagenI() != null) {
+            g.drawImage(levelBG[nivel], 0, 0, this);    // Imagen de background
 
+            if (pelota != null && pelota.getImagenI() != null) {
                 g.drawImage(pelota.getImagenI(), pelota.getPosX(), pelota.getPosY(), this);
             }
 
@@ -312,6 +320,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 g.drawImage(barra.getImagenI(), barra.getPosX(), barra.getPosY(), this);
             }
 
+            for (Ladrillo ladrillo : ladrillos) {
+                g.drawImage(ladrillo.getImagenI(), ladrillo.getPosX(), ladrillo.getPosY(), this);
+            }
+            
             g.setFont(new Font("default", Font.BOLD, 16));
             if (pausa) { // mensaje de pausa
                 g.setColor(Color.white);
@@ -323,16 +335,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
             g.setColor(Color.red);
             g.drawString("Vidas: " + vidas, 20, 105);
-            if (instrucciones) {
-                setBackground(Color.black);
-                g.drawImage(instructionBack, 0, 0, this);    // Imagen de instrucciones
-            }
-            if (vidas <= 0) {
-                pausa = true;
-                g.drawImage(gameover, 0, 0, this);    // Imagen de instrucciones
-            }
-        } else if(State == State.MENU) {
+            
+        } else if (State == STATE.MENU) {
             menu.render(g);
+        } else if (State == STATE.HELP) {
+            
+        } else if (State == STATE.CHARSEL) {
+            
         }
     }
 
@@ -347,7 +356,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      */
     @Override
     public void keyPressed(KeyEvent e) {
-       if(State == STATE.GAME) {
+        if (State == STATE.GAME) {
             if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                 barra.setMoveLeft(true);
             } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
@@ -370,7 +379,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             } else if (e.getKeyCode() == KeyEvent.VK_S) {
                 sound = !sound;
             }
-       }
+        }
     }
 
     /**
@@ -380,29 +389,19 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      */
     @Override
     public void keyReleased(KeyEvent e) {
-        if(State == STATE.GAME) {
+        if (State == STATE.GAME) {
             if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                 barra.setMoveLeft(false);
             } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 barra.setMoveRight(false);
             } else if (e.getKeyCode() == KeyEvent.VK_G) {
-                if (!instrucciones) {
+                //if (!instrucciones) {
                     try {
                         grabaArchivo();
                     } catch (IOException ex) {
                         Logger.getLogger(Juego.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
-
-            } else if (e.getKeyCode() == KeyEvent.VK_I) {
-                if (!instrucciones) {
-                    instrucciones = true;
-                    pausa = true;
-
-                } else {
-                    instrucciones = false;
-                    pausa = true;
-                }
+                //}
 
             }
         }
