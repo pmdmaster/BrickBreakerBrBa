@@ -104,11 +104,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         gameOverBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Background/gameover.jpg"));
         winBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Background/win.jpg"));
         levelBG = new Image[niveles];
+        cont = new Boton[3];
         for (int i = 1; i <= niveles; i++) {
             levelBG[i-1] = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Background/lvl" + i + ".jpg"));
+            cont[i-1] = new Boton(getWidth()/2, getHeight()/2, Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/" + i + ".png")));
+            cont[i-1].setPosX(cont[i-1].getPosX() - cont[i-1].getAncho()/2);
+            cont[i-1].setPosY(cont[i-1].getPosY() - cont[i-1].getAlto()/2);
         }
-        cont = new Boton[3];
-
         State = STATE.MENU;
         menu = new Menu(menuBG);
         charSel = new CharSel(charSelBG);
