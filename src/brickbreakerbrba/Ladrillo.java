@@ -64,6 +64,12 @@ public class Ladrillo extends Base {
         return anims;
     }
     
-    
+    /**
+     * Metodo que regresa el valor de <code>visible</code>
+     * @return <code>boolean</code>
+     */
+    public boolean getVisible() {
+        return visible;
+    }
     
 }

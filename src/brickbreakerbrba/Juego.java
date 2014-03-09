@@ -94,12 +94,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         ladrillos = new Vector();
         niveles = 3;
 
-        menuBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/background.jpg"));
+        menuBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/menu.jpg"));
         helpBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/instrucciones.jpg"));
-        charSelBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/background.jpg"));
-        gameOverBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/gameover2.jpg"));
-        for (int i = 0; i < niveles; i++) {
-            levelBG[i] = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/background.jpg"));
+        charSelBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/charsel.jpg"));
+        gameOverBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/gameover.jpg"));
+        for (int i = 1; i <= niveles; i++) {
+            levelBG[i] = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/lvl" + i + ".jpg"));
         }
         cont = new Boton[3];
         for (int i = 0; i < 3; i++) {
@@ -120,6 +120,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         sound = true;
         vidas = 3;
         score = 0;
+        nivel = 1;
 
         jugando = true;
         startGame = false;
@@ -229,6 +230,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         }
     }
 
+    public void loadNewLevel() {
+        // Lee archivo con posición de ladrillos
+    }
+    
     /**
      * El método actualiza() actualiza la animación
      */
@@ -310,11 +315,23 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
             
             // Colision de pelota con ladrillos
-            for (Ladrillo ladrillo : ladrillos) {
-
+            for (int i = 0; i < ladrillos.size(); i++) {
+                Ladrillo ladrillo = ladrillos.elementAt(i);
                 if(pelota.colisiona(ladrillo)) {
                     ladrillo.hit();
+                    if(!ladrillo.getVisible()) {
+                        ladrillos.removeElementAt(i);
+                        i--;
+                        if (ladrillos.isEmpty()) {
+                            nivel++;
+                            vidas++;
+                            startGame = true;
+                            tiempo = System.currentTimeMillis();
+                            loadNewLevel();
+                        }
+                    }
                 }
+                
             }
         }
     }
