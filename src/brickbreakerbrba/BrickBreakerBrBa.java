@@ -17,7 +17,7 @@ public class BrickBreakerBrBa {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        JFrameBrickBreakerBrBa juego = new JFrameBrickBreakerBrBa();
+        Juego juego = new Juego();
         juego.setVisible(true);
     }
     

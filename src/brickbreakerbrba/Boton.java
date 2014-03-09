@@ -113,4 +113,12 @@ public class Boton {
     public boolean contiene(int x, int y) {
         return getPerimetro().contains(x, y);
     }
+    
+    /**
+     * Metodo de acceso que regresa la imagen del icono 
+     * @return un objeto de la clase <code>Image</code> que es la imagen del icono.
+     */
+    public Image getImagenI() {
+        return icono.getImage();
+    }
 }

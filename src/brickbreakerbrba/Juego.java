@@ -22,7 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 
-public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListener, MouseListener {
+public class Juego extends JFrame implements Runnable, KeyListener, MouseListener {
 
     private static final long serialVersionUID = 1L;
     private static final String nombreArchivo = "score.txt";
@@ -34,6 +34,7 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
     private boolean instrucciones;
     private boolean entrando;
     private boolean sound;
+    public static boolean jugando = true;
     private int vidas;
     private int score;
     private int tMensaje;
@@ -48,6 +49,7 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
     private Menu menu;
     public static enum STATE{
         MENU,
+        HELP,
         CHARSEL,
         GAME,
         GAMEOVER,
@@ -60,7 +62,7 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
     /**
      * Método constructor de la clase <code>JFrameExamen</code>.
      */
-    public JFrameBrickBreakerBrBa() {
+    public Juego() {
         setTitle("Breaking Bad");
         setSize(1100, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -363,7 +365,7 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
                 try {
                     leeArchivo();
                 } catch (IOException ex) {
-                    Logger.getLogger(JFrameBrickBreakerBrBa.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Juego.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else if (e.getKeyCode() == KeyEvent.VK_S) {
                 sound = !sound;
@@ -388,7 +390,7 @@ public class JFrameBrickBreakerBrBa extends JFrame implements Runnable, KeyListe
                     try {
                         grabaArchivo();
                     } catch (IOException ex) {
-                        Logger.getLogger(JFrameBrickBreakerBrBa.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(Juego.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
 
