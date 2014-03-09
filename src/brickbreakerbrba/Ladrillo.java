@@ -19,8 +19,15 @@ public class Ladrillo extends Base {
     private int item;
     private static Animacion[] anims = crearAnimacionLadrillo();
     
+    /**
+     * Método constructor de <code>Ladrillo</code>
+     * @param posX coordenada X
+     * @param posY coordenada Y
+     * @param niv tipo de objeto
+     * @param it tipo de power-up
+     */
     public Ladrillo (int posX, int posY, int niv, int it) {
-        super (posX, posY, getAnim(niv));
+        super (posX, posY, anims[niv-1]);
         nivel = niv;
         visible = true;
         item = it;
@@ -35,6 +42,8 @@ public class Ladrillo extends Base {
         if (nivel == 0) {
             visible = false;
             return item;
+        } else {
+            setAnimacion(anims[nivel-1]);
         }
         return -1;
     }
@@ -56,9 +65,5 @@ public class Ladrillo extends Base {
     }
     
     
-    private static Animacion getAnim(int i) {
-        return anims[i-1];
-    }
-
     
 }

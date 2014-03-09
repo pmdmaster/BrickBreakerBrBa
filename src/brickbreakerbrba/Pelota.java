@@ -14,86 +14,28 @@ import java.awt.Toolkit;
  */
 public class Pelota extends Base {
     
-    private int vX;
-    private int vY;
-    private int initX;
-    private int initY;
-    private boolean mov;
+    private double ang;
+    private double vel;
     
-    public Pelota (int posX, int posY, int velX, int velY) {
-        super(posX, posY, getAnimacion());
-        vX = velX;
-        initX = posX;
-        vY = velY;
-        initY = posY;
+    public Pelota () {
+        super(0, 0, getAnimacion());
     }
     
-    /**
-     * Checa si el objeto <code>Base</code> intersecta a otro
-     * <code>Base</code>
-     *
-     * @return un valor boleano <code>true</code> si lo intersecta
-     * <code>false</code> en caso contrario
-     */
-    public boolean intersects(Base obj) {
-        return getPerimetro().intersects(obj.getPerimetro());
+    public void setAng (double ang) {
+        this.ang = ang;
     }
     
-    /**
-     * Establece el valor de vx
-     * @param v un <code>double</code>
-     */
-    public void setVx(int v) {
-        vX = v;
+    public double getAng () {
+        return ang;
     }
     
-    /**
-     * Establece el valor de vy
-     * @param v un <code>double</code>
-     */
-    public void setVy(int v) {
-        vY = v;
-    }
-    
-    /**
-     * Establece el valor de vx
-     * @param v un <code>double</code>
-     */
-    public int getVx() {
-        return vX;
-    }
-    
-    /**
-     * Establece el valor de vy
-     * @return 
-     */
-    public int getVy() {
-        return vY;
-    }
-    
-    /**
-     * Indica si la pelota está en movimiento o no
-     * @param m valor que tomará <code>mov</code>
-     */
-    public void setMov(boolean m) {
-        mov = m;
-    }
-    
-    /**
-     * Regresa si <code>Pelota</code> esta en movimiento o no
-     * @return true o false
-     */
-    public boolean getMov() {
-        return mov;
-    }
     /**
      * Inicia el movimiento de <code>Pelota<code>.
+     * @param v velocidad inicial
      */
-    public void lanzar() {
-        mov = true;
-        vX = (int) (Math.random ()*10-5);
-        vY = (int) -(Math.random ()*4+1);
-
+    public void lanzar(double v) {
+        ang = Math.random()*(Math.PI/2) + Math.PI/4;
+        vel = v;
     }
     
     /**
@@ -109,35 +51,26 @@ public class Pelota extends Base {
     }
     
     public String getData() {
-        String salida = String.valueOf(getPosX())+","+String.valueOf(getPosY())+","+ String.valueOf(vX) + ",";
-        salida += String.valueOf (vY);
+        String salida = "";
+        //salida = String.valueOf(getPosX())+","+String.valueOf(getPosY())+","+ String.valueOf(vX) + ",";
+        //salida += String.valueOf (vY);
         return salida;
         
     }
     public void assingData(String[] arr) {
         
-        setPosX(Integer.parseInt(arr[3]));
+        /*setPosX(Integer.parseInt(arr[3]));
         setPosY(Integer.parseInt(arr[4]));
         vX = Integer.parseInt(arr[5]);
-        vY = Integer.parseInt(arr[6]);
+        vY = Integer.parseInt(arr[6]);*/
 
     }
     /**
      * La pelota se mueve de acuerdo al tiempo, velocidad en X y Y, y gravedad.
      */
     public void avanza() {
-        if (mov) {
-            setPosX(getPosX() + vX);
-            setPosY(getPosY() + vY);
-        }
-    }
-    /**
-     * <code>Pelota</code> reaparece en su posicion original.
-     */
-    public void reaparecer() {
-        setPosX(initX);
-        setPosY(initY);
-        mov = false;
+        setDoublePosX(getPosX() + vel*Math.cos(ang));
+        setDoublePosY(getPosY() - vel*Math.sin(ang));
     }
     
     /**
@@ -146,17 +79,15 @@ public class Pelota extends Base {
      * @return <code>boolean</code>
      */
     public boolean colisiona(Base otro) {
-        if (hitUp(otro)) {
-            setVy(-getVy());
+        if (hitUp(otro) || hitDown(otro)) {
+            ang = 2*Math.PI - ang;
             return true;
-        } else if (hitDown(otro)) {
-            setVy(-getVy());
-            return true;
-        } else if (hitLeft(otro)) {
-            setVx(-getVx());
-            return true;
-        } else if (hitRight(otro)) {
-            setVx(-getVx());
+        } else if (hitLeft(otro) || hitRight(otro)) {
+            if (ang < Math.PI) {
+                ang = Math.PI - ang;
+            } else {
+                ang = 3*Math.PI - ang;
+            }
             return true;
         }
         return false;

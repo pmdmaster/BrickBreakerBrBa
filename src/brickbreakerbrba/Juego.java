@@ -90,7 +90,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         addMouseListener(this);
         Base.setW(getWidth());
         Base.setH(getHeight());
-        pelota = new Pelota(getWidth() / 2, getHeight() - 50, 0, 0);
+        pelota = new Pelota();
         ladrillos = new Vector();
         niveles = 3;
 
@@ -252,7 +252,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             contador = 2 - (int)(System.currentTimeMillis() - tiempo) / TCONTADOR;
             if (contador < 0) {
                 startGame = false;
-                pelota.lanzar();
+                pelota.lanzar(nivel + 3);
             } else {
                 pelota.setPosX(barra.getPosX() + barra.getAncho()/2 - pelota.getAncho()/2);
                 pelota.setPosY(barra.getPosY() - pelota.getAlto());
@@ -283,7 +283,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             
             // Colision de pelota con JFrame
             if ((pelota.getPosX() < 0) || (pelota.getPosX() + pelota.getAncho() > getWidth())) {
-                pelota.setVx(-pelota.getVx());
+                if (pelota.getAng() < Math.PI) {
+                    pelota.setAng(Math.PI - pelota.getAng());
+                } else {
+                    pelota.setAng(3*Math.PI - pelota.getAng());
+                }
             }
             if (pelota.getPosY() > getHeight() + 10) {
                 if (sound) {
