@@ -324,6 +324,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 vidas--;
                 if (vidas == 0) {
                     State = STATE.GAMEOVER;
+                    vidas = 3;
+                    score = 0;
+                    nivel = 1;
+                    while (!ladrillos.isEmpty()) {
+                        ladrillos.removeElementAt(0);
+                    }
                 }
             }
             
