@@ -15,7 +15,7 @@ import java.awt.event.MouseListener;
  *
  * @author Alberto
  */
-public class GameOver implements MouseListener {
+public class Win implements MouseListener {
     
     private final Boton RETURN;
     private final Boton QUIT;
@@ -25,14 +25,10 @@ public class GameOver implements MouseListener {
      * Metodo constructor
      * @param background imagen de fondo
      */
-    public GameOver(Image background) {
+    public Win(Image background) {
         this.BACKGROUND = background;
-        RETURN = new Boton(Base.getW()/5, Base.getH()/2, "Images/Buttons/return.jpg");
-        QUIT = new Boton(4*Base.getW()/5, Base.getH()/2, "Images/Buttons/quit.jpg");
-        RETURN.setPosX(RETURN.getPosX() - RETURN.getAncho()/2);
-        RETURN.setPosY(RETURN.getPosY() - RETURN.getAlto()/2);
-        QUIT.setPosX(QUIT.getPosX() - QUIT.getAncho()/2);
-        QUIT.setPosY(QUIT.getPosY() - QUIT.getAlto()/2);
+        RETURN = new Boton(Base.getW()/8, Base.getH()/2, "Images/Buttons/return.jpg");
+        QUIT = new Boton(Base.getW()/8, 3*Base.getH()/4, "Images/Buttons/quit.jpg");
     }
     /**
      * Dibuja la pantalla menu

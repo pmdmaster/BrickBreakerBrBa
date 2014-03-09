@@ -26,7 +26,7 @@ public class Help implements MouseListener {
      */
     public Help(Image background) {
         this.BACKGROUND = background;
-        RETURN = new Boton(0, 0, "Images/Buttons/return.jpg");
+        RETURN = new Boton(Base.getW()/8, 4*Base.getH()/5, "Images/Buttons/return.jpg");
     }
     
     /**

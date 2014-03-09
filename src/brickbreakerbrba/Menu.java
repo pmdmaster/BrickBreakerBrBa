@@ -30,9 +30,9 @@ public class Menu implements MouseListener {
      */
     public Menu(Image background) {
         this.BACKGROUND = background;
-        PLAY = new Boton(3*Base.getW()/4, Base.getH()/4, "Images/Buttons/play.jpg");
-        HELP = new Boton(3*Base.getW()/4, Base.getH()/2, "Images/Buttons/help.jpg");
-        QUIT = new Boton(3*Base.getW()/4, 3*Base.getH()/4, "Images/Buttons/quit.jpg");
+        PLAY = new Boton(2*Base.getW()/3, Base.getH()/5, "Images/Buttons/play.jpg");
+        HELP = new Boton(2*Base.getW()/3, 2*Base.getH()/5, "Images/Buttons/help.jpg");
+        QUIT = new Boton(2*Base.getW()/3, 3*Base.getH()/5, "Images/Buttons/quit.jpg");
     }
     /**
      * Dibuja la pantalla menu

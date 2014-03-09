@@ -43,6 +43,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Image charSelBG;
     private Image[] levelBG;
     private Image gameOverBG;
+    private Image winBG;
     private Image pause;
     private Boton[] cont;
     private Graphics dbg;
@@ -52,13 +53,15 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private CharSel charSel;
     private GameOver gameOver;
     private Help help;
+    private Win win;
     
     public static enum STATE {
         MENU,
         HELP,
         CHARSEL,
         GAME,
-        GAMEOVER
+        GAMEOVER,
+        WIN
     };
     public static STATE State;
     public static int jugador = -1;
@@ -98,6 +101,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         helpBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/instrucciones.jpg"));
         charSelBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/charsel.jpg"));
         gameOverBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/gameover.jpg"));
+        winBG = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/win.jpg"));
         for (int i = 1; i <= niveles; i++) {
             levelBG[i] = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/background/lvl" + i + ".jpg"));
         }
@@ -113,6 +117,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         charSel = new CharSel(charSelBG);
         help = new Help(helpBG);
         gameOver = new GameOver(gameOverBG);
+        win = new Win(winBG);
         
         pause = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pause.png"));
 
@@ -324,10 +329,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                         i--;
                         if (ladrillos.isEmpty()) {
                             nivel++;
-                            vidas++;
-                            startGame = true;
-                            tiempo = System.currentTimeMillis();
-                            loadNewLevel();
+                            if (nivel > 3) {
+                                State = STATE.WIN;
+                            } else {
+                                vidas++;
+                                startGame = true;
+                                tiempo = System.currentTimeMillis();
+                                loadNewLevel();
+                            }
                         }
                     }
                 }
