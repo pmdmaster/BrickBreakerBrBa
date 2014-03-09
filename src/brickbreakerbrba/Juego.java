@@ -312,6 +312,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                     pelota.setAng(3*Math.PI - pelota.getAng());
                 }
             }
+            if (pelota.getPosY() < 0) {
+                pelota.setAng(2*Math.PI - pelota.getAng());
+            }
             if (pelota.getPosY() > getHeight() + 10) {
                 if (sound) {
                     shoot.play();
