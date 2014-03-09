@@ -34,7 +34,8 @@ public class Pelota extends Base {
      * @param v velocidad inicial
      */
     public void lanzar(double v) {
-        ang = Math.random()*(Math.PI/2) + Math.PI/4;
+        //ang = Math.random()*(Math.PI/2) + Math.PI/4;
+        ang = Math.PI/3;
         vel = v;
     }
     
