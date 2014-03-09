@@ -22,6 +22,10 @@ public class CharSel implements MouseListener {
     private final Boton[] PERSONAJES;
     private final Image BACKGROUND;
     
+    /**
+     * Metodo constructor
+     * @param background imagen de fondo
+     */
     public CharSel(Image background) {
         this.BACKGROUND = background;
         PLAY = new Boton(0, 0, "Images/Buttons/play.jpg");
@@ -32,8 +36,9 @@ public class CharSel implements MouseListener {
             PERSONAJES[i] = new Boton(0, 0, "");
         }
     }
+    
     /**
-     *
+     * Dibuja la pantalla de seleccion de personajes
      * @param g
      */
     public void render(Graphics g) {
@@ -50,6 +55,10 @@ public class CharSel implements MouseListener {
         
     }
 
+    /**
+     * Revisa clicks en los botones
+     * @param e 
+     */
     @Override
     public void mouseClicked (MouseEvent e) {
         if (Juego.State == Juego.STATE.CHARSEL) {

@@ -20,12 +20,17 @@ public class Help implements MouseListener {
     private Boton returnButton;
     private final Image BACKGROUND;
     
+    /**
+     * Metodo constructor
+     * @param background imagen de fondo
+     */
     public Help(Image background) {
         this.BACKGROUND = background;
         returnButton = new Boton(0, 0, "Images/Buttons/return.jpg");
     }
+    
     /**
-     *
+     * Dibuja la pantalla de ayuda
      * @param g
      */
     public void render(Graphics g) {
@@ -35,6 +40,10 @@ public class Help implements MouseListener {
         
     }
 
+    /**
+     * Revisa clicks en los botones
+     * @param e 
+     */
     @Override
     public void mouseClicked (MouseEvent e) {
         if (Juego.State == Juego.STATE.HELP) {

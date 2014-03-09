@@ -364,13 +364,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 barra.setMoveRight(true);
             } else if (e.getKeyCode() == KeyEvent.VK_P) {
-                if (!pausa) {
-                    pausa = true;
-
-                } else {
-                    pausa = false;
-
-                }
+                pausa = !pausa;
             } else if (e.getKeyCode() == KeyEvent.VK_C) {
 
                 try {
@@ -409,17 +403,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         }
     }
 
-    /**
-     * Inicia el movimiento de <code>pelota</code>.
-     *
-     * @param e
-     */
     @Override
-    public void mouseClicked(MouseEvent e) {
-        if (!pelota.getMov() && pelota.contiene(e.getX(), e.getY())) {
-            pelota.lanzar();
-        }
-    }
+    public void mouseClicked(MouseEvent e) {}
 
     @Override
     public void mousePressed(MouseEvent e) {

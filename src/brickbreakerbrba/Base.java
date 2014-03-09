@@ -62,6 +62,14 @@ public class Base {
     public int getPosY() {
         return posY;
     }
+    
+    /**
+     * Metodo modificador del atributo <code>animacion</code>
+     * @param anim objeto de tipo <code>Animacion</code>
+     */
+    public void setAnimacion(Animacion anim) {
+        animacion = anim;
+    }
 
     /**
      * Metodo de acceso que regresa el icono del objeto

@@ -24,6 +24,10 @@ public class Menu implements MouseListener {
     private Boton quitButton;
     private final Image BACKGROUND;
     
+    /**
+     * Metodo constructor
+     * @param background imagen de fondo
+     */
     public Menu(Image background) {
         this.BACKGROUND = background;
         playButton = new Boton(3*Base.getW()/4, Base.getH()/4, "Images/Buttons/play.jpg");
@@ -31,7 +35,7 @@ public class Menu implements MouseListener {
         quitButton = new Boton(3*Base.getW()/4, 3*Base.getH()/4, "Images/Buttons/quit.jpg");
     }
     /**
-     *
+     * Dibuja la pantalla menu
      * @param g
      */
     public void render(Graphics g) {
@@ -43,6 +47,10 @@ public class Menu implements MouseListener {
         
     }
 
+    /**
+     * Revisa clicks en los botones
+     * @param e 
+     */
     @Override
     public void mouseClicked (MouseEvent e) {
         if(Juego.State == Juego.STATE.MENU) {
