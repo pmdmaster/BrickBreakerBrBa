@@ -246,7 +246,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         barra = new Barra(getWidth()/2, 5*getHeight()/6);
         for(int i = 0; i < 12; i++) {
             for(int j = 0; j < nivel + 3; j++) {
-                ladrillos.add(new Ladrillo (50 + i*81, 50 + j*31,nivel, 1));
+                ladrillos.add(new Ladrillo (200 + i*50, 50 + j*50,nivel, 1));
             }
         }
     }
