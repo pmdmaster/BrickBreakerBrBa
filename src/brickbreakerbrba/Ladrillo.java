@@ -17,7 +17,7 @@ public class Ladrillo extends Base {
     private int nivel;
     private boolean visible;
     private int item;
-    private static Animacion[] anim = new Animacion[3];
+    private static Animacion[] anim = new Animacion[4];
     private static int X = crearAnimacionLadrillo();
     
     /**
@@ -60,7 +60,7 @@ public class Ladrillo extends Base {
             anims[i-1].sumaCuadro (Toolkit.getDefaultToolkit ().getImage (Pelota.class.getResource ("Images/ladrillo.png" )), 60);
         }
         return anims;*/
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; i <= 4; i++) {
             anim[i-1] = new Animacion();
             anim[i-1].sumaCuadro (Toolkit.getDefaultToolkit ().getImage (Pelota.class.getResource ("Images/ladrillo" + i + ".png" )), 60);
         }
