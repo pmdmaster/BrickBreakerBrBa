@@ -425,7 +425,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.setFont(new Font("default", Font.BOLD, 16));
             if (pausa) { // mensaje de pausa
                 g.setColor(Color.white);
-                g.drawImage(pause, barra.getPosX() - 10, barra.getPosY() - 37, this);
+                g.drawImage(pause, barra.getPosX() + barra.getAncho()/2 - pause.getWidth(this)/2, barra.getPosY() + barra.getAlto()/2 - pause.getHeight(this)/2, this);
             }
 
             g.setColor(Color.green);
